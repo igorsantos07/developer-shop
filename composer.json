@@ -1,0 +1,21 @@
+{
+    "name": "igorsantos07/developer-shop",
+    "description": "VTEX Hiring test",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "restler/framework": "^3.0",
+        "laravelbook/ardent": "^3.3"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.1",
+        "fzaninotto/faker": "^1.6@dev"
+    },
+    "authors": [
+        {
+            "name": "Igor Santos",
+            "email": "igorsantos07@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}

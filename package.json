@@ -1,0 +1,30 @@
+{
+  "name": "developer-shop",
+  "version": "0.1.0",
+  "description": "VTEX Hiring test",
+  "main": "index.htm",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:igorsantos07/developer-shop.git"
+  },
+  "keywords": [
+    "vtex",
+    "shop"
+  ],
+  "author": "igorsantos07",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/igorsantos07/developer-shop/issues"
+  },
+  "homepage": "https://github.com/igorsantos07/developer-shop",
+  "dependencies": {
+    "babel-preset-react": "^6.3.13",
+    "babelify": "^7.2.0",
+    "laravel-elixir": "^4.1.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3"
+  }
+}
