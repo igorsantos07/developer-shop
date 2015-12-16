@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2e4e9c6c56f8e416d5602001de8d86ef",
-    "content-hash": "d4104706c41fb736095ed9a9f616a087",
+    "hash": "57d99fbdb356a52f5bf1e57554637bfa",
+    "content-hash": "0d3d9607d4f5d41581c9bdfcb1c1b9fe",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -123,12 +123,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "7fdce9a8f2303e15f928a7c54aaff08db1caa567"
+                "reference": "b0e2b97a337d45e7b6f1ab7466bb43eff1953235"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/7fdce9a8f2303e15f928a7c54aaff08db1caa567",
-                "reference": "7fdce9a8f2303e15f928a7c54aaff08db1caa567",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/b0e2b97a337d45e7b6f1ab7466bb43eff1953235",
+                "reference": "b0e2b97a337d45e7b6f1ab7466bb43eff1953235",
                 "shasum": ""
             },
             "require": {
@@ -157,7 +157,7 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-06 03:54:28"
+            "time": "2015-12-15 19:36:59"
         },
         {
             "name": "illuminate/database",
@@ -165,12 +165,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "fb09dda57ee49092ff2b0954447edb188eaee9f1"
+                "reference": "f7fbc9660ce2b1d0041d0a3e305dd809e3b21c77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/fb09dda57ee49092ff2b0954447edb188eaee9f1",
-                "reference": "fb09dda57ee49092ff2b0954447edb188eaee9f1",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/f7fbc9660ce2b1d0041d0a3e305dd809e3b21c77",
+                "reference": "f7fbc9660ce2b1d0041d0a3e305dd809e3b21c77",
                 "shasum": ""
             },
             "require": {
@@ -217,7 +217,7 @@
                 "orm",
                 "sql"
             ],
-            "time": "2015-12-13 22:27:08"
+            "time": "2015-12-15 19:36:59"
         },
         {
             "name": "illuminate/events",
@@ -716,12 +716,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "33e11f7447cbbcdb29f8e94837709e24e9cd1752"
+                "reference": "56010646397dce138ca0e63ac8a5c4f7f2da9e51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/33e11f7447cbbcdb29f8e94837709e24e9cd1752",
-                "reference": "33e11f7447cbbcdb29f8e94837709e24e9cd1752",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/56010646397dce138ca0e63ac8a5c4f7f2da9e51",
+                "reference": "56010646397dce138ca0e63ac8a5c4f7f2da9e51",
                 "shasum": ""
             },
             "require": {
@@ -735,7 +735,7 @@
                 "symfony/browser-kit": "~2.4",
                 "symfony/console": "~2.4",
                 "symfony/css-selector": "~2.4",
-                "symfony/dom-crawler": "~2.4,!=2.4.5",
+                "symfony/dom-crawler": "~2.4",
                 "symfony/event-dispatcher": "~2.4",
                 "symfony/finder": "~2.4",
                 "symfony/yaml": "~2.4"
@@ -788,7 +788,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2015-12-09 11:47:13"
+            "time": "2015-12-16 13:44:31"
         },
         {
             "name": "doctrine/instantiator",
@@ -1105,6 +1105,50 @@
                 "uri"
             ],
             "time": "2015-11-03 01:34:55"
+        },
+        {
+            "name": "heroku/heroku-buildpack-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heroku/heroku-buildpack-php.git",
+                "reference": "dabeac9552e7c6cc9422117fa57497b3155ac24f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/dabeac9552e7c6cc9422117fa57497b3155ac24f",
+                "reference": "dabeac9552e7c6cc9422117fa57497b3155ac24f",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/heroku-hhvm-apache2",
+                "bin/heroku-hhvm-nginx",
+                "bin/heroku-php-apache2",
+                "bin/heroku-php-nginx"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Zuelke",
+                    "email": "dz@heroku.com"
+                }
+            ],
+            "description": "Toolkit for starting a PHP application locally, with or without foreman, using the same config for PHP/HHVM and Apache2/Nginx as on Heroku",
+            "homepage": "http://github.com/heroku/heroku-buildpack-php",
+            "keywords": [
+                "apache",
+                "apache2",
+                "foreman",
+                "heroku",
+                "hhvm",
+                "nginx",
+                "php"
+            ],
+            "time": "2015-12-15 16:38:44"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -2068,12 +2112,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "ec55a12a19fd794126f3d31a12801d92a349533b"
+                "reference": "ae255d9d241893cb29cbc19e9f68774991448753"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/ec55a12a19fd794126f3d31a12801d92a349533b",
-                "reference": "ec55a12a19fd794126f3d31a12801d92a349533b",
+                "url": "https://api.github.com/repos/symfony/console/zipball/ae255d9d241893cb29cbc19e9f68774991448753",
+                "reference": "ae255d9d241893cb29cbc19e9f68774991448753",
                 "shasum": ""
             },
             "require": {
@@ -2120,7 +2164,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-12 20:05:07"
+            "time": "2015-12-15 01:39:37"
         },
         {
             "name": "symfony/css-selector",

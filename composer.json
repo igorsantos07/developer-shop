@@ -9,7 +9,8 @@
     },
     "require-dev": {
         "codeception/codeception": "^2.1",
-        "fzaninotto/faker": "^1.6@dev"
+        "fzaninotto/faker": "^1.6@dev",
+        "heroku/heroku-buildpack-php": "*"
     },
     "authors": [
         {
