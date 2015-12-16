@@ -18,5 +18,10 @@
             "email": "igorsantos07@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "stable",
+    "scripts": {
+        "post-install-cmd": [
+            "gulp --production"
+        ]
+    }
 }

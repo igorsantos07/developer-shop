@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="/lib/bootstrap/bootstrap.css">
     <? endif ?>
 
-    <link rel="stylesheet" href="/style/main.css">
+    <link rel="stylesheet" href="/main.css">
 </head>
 
 <body>
@@ -37,7 +37,10 @@
             <div class="form-group">
                 <input type="text" placeholder="Price" class="form-control">
             </div>
-            <button type="submit" class="btn btn-success">Add</button>
+            <button type="submit" class="btn btn-success">
+                <i class="glyphicon glyphicon-shopping-cart"></i>
+                Add
+            </button>
         </form>
     </div>
 
@@ -56,14 +59,20 @@
                 <td>brenoc</td>
                 <td>$224</td>
                 <td>
-                    <button class="btn btn-danger pull-right">Remove</button>
+                    <button class="btn btn-danger pull-right">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        Remove
+                    </button>
                 </td>
             </tr>
             <tr class="product">
                 <td>firstdoit</td>
                 <td>$416</td>
                 <td>
-                    <button class="btn btn-danger pull-right">Remove</button>
+                    <button class="btn btn-danger pull-right">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        Remove
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -95,6 +104,6 @@
     <script src="/lib/bootstrap/bootstrap.js"></script>
 <? endif ?>
 
-<script src="script/main.js"></script>
+<script src="/main.js"></script>
 </body>
 </html>
