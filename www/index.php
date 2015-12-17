@@ -46,37 +46,8 @@
 
     <div class="cart row">
         <h2>Cart</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Username</th>
-                <th>Price</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="product">
-                <td>brenoc</td>
-                <td>$224</td>
-                <td>
-                    <button class="btn btn-danger pull-right">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        Remove
-                    </button>
-                </td>
-            </tr>
-            <tr class="product">
-                <td>firstdoit</td>
-                <td>$416</td>
-                <td>
-                    <button class="btn btn-danger pull-right">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        Remove
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div id="cart-table"></div>
     </div>
 
     <div class="totalizer row">
