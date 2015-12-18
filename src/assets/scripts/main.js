@@ -6,12 +6,6 @@ var BS = require('./bootstrap/all');
 var Form = require('./add-developer');
 var CartTable = require('./cart-table');
 
-var devs = [
-    //{ id: 1, name: 'brenoc', price: 224 },
-    //{ id: 2, name: 'vlribeiro7', price: 123 },
-    //{ id: 3, name: 'igorsantos07', price: 777 }
-];
-
 
 var CartBlock = React.createClass({
     getInitialState: ()=> ({ products: [] }),
@@ -25,6 +19,11 @@ var CartBlock = React.createClass({
         this.setState(this.state);
     },
 
+    removeDeveloper: function(id) {
+        this.state.products = this.state.products.filter(prod => prod.id != id);
+        this.setState(this.state);
+    },
+
     render: function() {
         return (<div>
             <div className="row">
@@ -35,7 +34,7 @@ var CartBlock = React.createClass({
 
             <div className="cart row">
                 <h2>Cart</h2>
-                <CartTable products={this.state.products}/>
+                <CartTable products={this.state.products} onRemove={this.removeDeveloper}/>
             </div>
 
             <div className="totalizer row">
