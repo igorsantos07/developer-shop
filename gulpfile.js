@@ -6,7 +6,10 @@ elixir.config.css.autoprefix.options = {
 };
 
 elixir(function (mix) {
-    mix.less(['../../../src/assets/styles'], 'www/main.css');
-
-    mix.browserify(['../../../src/assets/scripts/main.js'], 'www/main.js');
+    mix.less('../../../src/assets/styles', 'www/main.css');
+    mix.browserify('../../../src/assets/scripts/main.js', 'www/main.js');
+    mix.browserSync({
+        files: 'www/*',
+        proxy: 'devshop.dev'
+    });
 });
