@@ -1,5 +1,5 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
+var utils = require('./utils');
 
 var CartTable = React.createClass({
     render: function() {
@@ -35,12 +35,11 @@ var CartTable = React.createClass({
 });
 
 CartTable.ProductLine = React.createClass({
-    //TODO: price.toString() does not account for precise decimal places
     render: function () {
         return (
             <tr className="product">
                 <td>{this.props.children}</td>
-                <td>${this.props.price.toString()}</td>
+                <td>{utils.priceFormat(this.props.price)}</td>
                 <td>
                     <button className="btn btn-danger pull-right">
                         <i className="glyphicon glyphicon-trash" />&nbsp;

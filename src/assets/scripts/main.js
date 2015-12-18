@@ -12,8 +12,10 @@ var devs = [
     //{ id: 3, name: 'igorsantos07', price: 777 }
 ];
 
+
 var CartBlock = React.createClass({
     addDeveloper: function(username, price) {
+        price = price || 0;
         console.log('should add a developer named ' + username);
     },
 
