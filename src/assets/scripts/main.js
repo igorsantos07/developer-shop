@@ -25,14 +25,14 @@ var CartBlock = React.createClass({
     },
 
     render: function() {
-        return (<div>
-            <div className="row">
+        return (<div className="row">
+            <div className="col-sm-5">
                 <BS.Panel title="Add a developer">
                     <Form onSubmit={this.addDeveloper}/>
                 </BS.Panel>
             </div>
 
-            <div className="cart row">
+            <div className="col-sm-7">
                 <h2>Cart</h2>
                 <CartTable products={this.state.products} onRemove={this.removeDeveloper}/>
             </div>
