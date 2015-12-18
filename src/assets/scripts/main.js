@@ -36,21 +36,6 @@ var CartBlock = React.createClass({
                 <h2>Cart</h2>
                 <CartTable products={this.state.products} onRemove={this.removeDeveloper}/>
             </div>
-
-            <div className="totalizer row">
-                <div className="col-sm-5">
-                    <div className="row">
-                        <table className="table">
-                            <tbody>
-                            <tr className="total">
-                                <td>Total</td>
-                                <td>$640</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>);
     }
 });

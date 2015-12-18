@@ -21,6 +21,8 @@ var CartTable = React.createClass({
             lines = <tr><td colSpan="3">Your cart is empty :(</td></tr>;
         }
 
+        var total = this.props.products.reduce((total, prod)=> { return total + prod.price }, 0);
+
         return (
             <table className="table">
                 <thead>
@@ -32,6 +34,14 @@ var CartTable = React.createClass({
                 </thead>
 
                 <tbody>{lines}</tbody>
+
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        <th>{utils.priceFormat(total, true)}</th>
+                        <th/>
+                    </tr>
+                </tfoot>
             </table>
         );
     }
