@@ -27,43 +27,7 @@
         <h1>Dev Shop</h1>
     </div>
 
-    <div class="row">
-        <h2>Add a developer</h2>
-
-        <form class="form-inline" role="form">
-            <div class="form-group">
-                <input type="text" placeholder="GitHub Username" class="form-control">
-            </div>
-            <div class="form-group">
-                <input type="text" placeholder="Price" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">
-                <i class="glyphicon glyphicon-shopping-cart"></i>
-                Add
-            </button>
-        </form>
-    </div>
-
-    <div class="cart row">
-        <h2>Cart</h2>
-
-        <div id="cart-table"></div>
-    </div>
-
-    <div class="totalizer row">
-        <div class="col-sm-5">
-            <div class="row">
-                <table class="table">
-                    <tbody>
-                    <tr class="total">
-                        <td>Total</td>
-                        <td>$640</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <div id="cart-container"></div>
 
 </div> <!-- /container -->
 

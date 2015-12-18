@@ -1,61 +1,51 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var BS = require('./bootstrap/all');
+
+var Form = require('./add-developer');
+var CartTable = require('./cart-table');
+
 var devs = [
-    { id: 1, name: 'brenoc', price: 224 },
-    { id: 2, name: 'vlribeiro7', price: 123 },
-    { id: 3, name: 'igorsantos07', price: 777 }
+    //{ id: 1, name: 'brenoc', price: 224 },
+    //{ id: 2, name: 'vlribeiro7', price: 123 },
+    //{ id: 3, name: 'igorsantos07', price: 777 }
 ];
 
-var ProductLine = React.createClass({
+var CartBlock = React.createClass({
+    addDeveloper: function(username, price) {
+        console.log('should add a developer named ' + username);
+    },
+
     render: function() {
-        //TODO: price.toString() does not account for precise decimal places
-        return (
-            <tr className="product">
-                <td>{this.props.children}</td>
-                <td>${this.props.price.toString()}</td>
-                <td>
-                    <button className="btn btn-danger pull-right">
-                        <i className="glyphicon glyphicon-trash"/>&nbsp;
-                        Remove
-                    </button>
-                </td>
-            </tr>
-        );
+        return (<div>
+            <div className="row">
+                <BS.Panel title="Add a developer">
+                    <Form onSubmit={this.addDeveloper}/>
+                </BS.Panel>
+            </div>
+
+            <div className="cart row">
+                <h2>Cart</h2>
+                <CartTable products={devs}/>
+            </div>
+
+            <div className="totalizer row">
+                <div className="col-sm-5">
+                    <div className="row">
+                        <table className="table">
+                            <tbody>
+                            <tr className="total">
+                                <td>Total</td>
+                                <td>$640</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>);
     }
 });
 
-var CartTable = React.createClass({
-    render: function() {
-        var lines;
-        if (this.props.products.length > 0) {
-            lines = this.props.products.map(function (prod) {
-                return (
-                    <ProductLine price={prod.price} key={prod.id}>
-                        {prod.name}
-                    </ProductLine>
-                );
-            });
-        } else {
-            lines = <tr><td colspan="3">Your cart is empty :(</td></tr>;
-        }
-
-        return (
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Price</th>
-                        <th/>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {lines}
-                </tbody>
-            </table>
-        );
-    }
-});
-
-ReactDOM.render(<CartTable products={devs}/>, document.getElementById('cart-table'));
+ReactDOM.render(<CartBlock/>, document.getElementById('cart-container'));
