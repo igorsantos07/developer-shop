@@ -12,14 +12,14 @@ Sinta-se confortável para focar nas áreas que você tem mais habilidade.
 
 Priorize a lista de tarefas abaixo explicando os motivos da priorização de cada uma delas. Então, escolha de três a seis tarefas para implementar.
 
-* Determinar o preço do desenvolvedor a partir de informações do seu perfil do GitHub, como por exemplo: followers, repos, stars, commits, etc.
-* Substituir os inputs de texto por uma lista de desenvolvedores com nome, foto, preço e um botão de "Adicionar ao carrinho".
-* Criar paginação para a lista de desenvolvedores.
-* Popular a lista de desenvolvedores a partir de uma organização do GitHub.
-* Permitir a escolha de quantidade de horas contratadas de cada desenvolvedor.
-* Permitir a adição de um cupom de desconto que altera o preço total da compra. Utilize o código "SHIPIT".
-* Melhorar a visualização do desenvolvedor no carrinho mostrando mais informações.
-* Adicionar um botão de "comprar" que leva o usuário a uma página de pedido confirmado.
+1. Determinar o preço do desenvolvedor a partir de informações do seu perfil do GitHub, como por exemplo: followers, repos, stars, commits, etc.
+2. Substituir os inputs de texto por uma lista de desenvolvedores com nome, foto, preço e um botão de "Adicionar ao carrinho".
+3. Criar paginação para a lista de desenvolvedores.
+4. Popular a lista de desenvolvedores a partir de uma organização do GitHub.
+5. Permitir a escolha de quantidade de horas contratadas de cada desenvolvedor.
+6. Permitir a adição de um cupom de desconto que altera o preço total da compra. Utilize o código "SHIPIT".
+7. Melhorar a visualização do desenvolvedor no carrinho mostrando mais informações.
+8. Adicionar um botão de "comprar" que leva o usuário a uma página de pedido confirmado.
 
 ## Server side
 
