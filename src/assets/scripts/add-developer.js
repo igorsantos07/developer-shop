@@ -12,19 +12,19 @@ var Form = React.createClass({
         e.preventDefault();
 
         //we cannot mutate the state values in the handle functions directly as they would affect the input UX
-        this.state.username = this.state.username.trim();
-        this.state.price    = parseFloat(this.state.username) || '';
-        this.setState(this.state);
+        var username = this.state.username.trim();
+        var price    = parseFloat(this.state.price) || '';
 
         var $usernameParent = $('#username').parent('.form-group');
-        if (!this.state.username) {
+        if (!username) {
             $usernameParent.addClass('has-error');
             return false;
         } else {
             $usernameParent.removeClass('has-error');
         }
 
-        this.props.onSubmit(this.state.username, this.state.price);
+        this.props.onSubmit(username, price);
+        this.setState(this.getInitialState());
     },
 
     render: function() {
@@ -44,8 +44,7 @@ var Form = React.createClass({
                 </div>
 
                 <button type="submit" className="btn btn-success">
-                    <i className="glyphicon glyphicon-shopping-cart"/>
-                    Add
+                    <i className="glyphicon glyphicon-shopping-cart"/> Add
                 </button>
             </form>
         );

@@ -14,9 +14,15 @@ var devs = [
 
 
 var CartBlock = React.createClass({
+    getInitialState: ()=> ({ products: [] }),
+
     addDeveloper: function(username, price) {
-        price = price || 0;
-        console.log('should add a developer named ' + username);
+        this.state.products.push({
+            id: Date.now(),
+            name: username,
+            price: price || 0
+        });
+        this.setState(this.state);
     },
 
     render: function() {
@@ -29,7 +35,7 @@ var CartBlock = React.createClass({
 
             <div className="cart row">
                 <h2>Cart</h2>
-                <CartTable products={devs}/>
+                <CartTable products={this.state.products}/>
             </div>
 
             <div className="totalizer row">
