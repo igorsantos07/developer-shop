@@ -1,5 +1,5 @@
 <?php
-$config = require('src/config.php');
+$config = require('src/config/config.php');
 $db     = $config['database'];
 $port   = isset($db['port'])? ':'.$db['port'] : '';
 

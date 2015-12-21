@@ -35,7 +35,7 @@
 
         "post-install-cmd": [
             "vendor/bin/phinx migrate",
-            "gulp --production"
+            "DISABLE_NOTIFIER=true gulp --production"
         ]
     }
 }
