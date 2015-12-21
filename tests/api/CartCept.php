@@ -8,6 +8,10 @@ $gen_item = function() use ($devs) {
 };
 
 $I = new ApiTester($scenario);
+$I->wantTo('see the cart empty');
+$I->sendGET('cart');
+$I->seeCodeAndJson(200, ['items' => []]);
+
 $I->wantTo('add items to cart');
 $item = $gen_item();
 $I->sendPUT('cart', $item);

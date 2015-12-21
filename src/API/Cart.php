@@ -1,6 +1,5 @@
 <?php namespace Shop\API;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Luracast\Restler\RestException;
 use Shop\Model\Item;
 use Shop\Model\Order;
 
@@ -8,6 +7,7 @@ class Cart {
 
     /**
      * Finds or creates an order with the given {@link session_id()}.
+     * @param bool $eager if the items should be loaded in advance
      * @return Order
      */
     private function getOrder($eager = true) {
@@ -23,10 +23,14 @@ class Cart {
     }
 
     /**
-     * Gets all items in the cart for the given user session.
+     * Gets the cart details, including its items (or no items).
      */
     public function index() {
-        return $this->getOrder()->toArray();
+        $data = $this->getOrder()->toArray();
+        if (!isset($data['items'])) {
+            $data['items'] = [];
+        }
+        return $data;
     }
 
     /**
