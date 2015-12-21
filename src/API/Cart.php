@@ -1,4 +1,5 @@
 <?php namespace Shop\API;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Luracast\Restler\RestException;
 use Shop\Model\Item;
 use Shop\Model\Order;
@@ -6,12 +7,26 @@ use Shop\Model\Order;
 class Cart {
 
     /**
-     * Gets all items in the cart for the given user session.
-     * @param int $id
-     * @throws 501
+     * Finds or creates an order with the given {@link session_id()}.
+     * @return Order
      */
-    public function get($id) {
-        throw new RestException(HTTP_NOT_IMPLEMENTED);
+    private function getOrder($eager = true) {
+        $data = ['session' => session_id()];
+
+        //unable to use firstOrCreate() along with with()
+        try {
+            return Order::with($eager? 'items' : [])->where($data)->firstOrFail();
+        }
+        catch (ModelNotFoundException $e) {
+            return Order::create($data);
+        }
+    }
+
+    /**
+     * Gets all items in the cart for the given user session.
+     */
+    public function index() {
+        return $this->getOrder()->toArray();
     }
 
     /**
@@ -22,8 +37,7 @@ class Cart {
      * @return Item
      */
     public function put($item, $price) {
-        $order = Order::firstOrCreate(['session' => session_id()]);
-        $item  = $order->items()->create(compact('item', 'price'));
+        $item  = $this->getOrder(false)->items()->create(compact('item', 'price'));
         return $item->getAttributes();
     }
 
