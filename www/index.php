@@ -1,6 +1,6 @@
 <?php
     require_once '../vendor/autoload.php';
-    $config = require_once '../src/config.php';
+    $config = require_once '../src/config/config.php';
 ?>
 
 <!doctype html>

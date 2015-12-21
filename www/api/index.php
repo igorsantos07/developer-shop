@@ -1,7 +1,7 @@
 <?php
 ini_set('html_errors','off');
 require_once '../../vendor/autoload.php';
-$config = require_once '../../src/config.php';
+$config = require_once '../../src/config/config.php';
 
 session_start();
 
