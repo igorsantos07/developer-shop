@@ -18,7 +18,7 @@ class Cart {
             return Order::with($eager? 'items' : [])->where($data)->firstOrFail();
         }
         catch (ModelNotFoundException $e) {
-            return Order::create($data);
+            return Order::create($data)->fresh(); //fresh() so we get the default info from the DB as well
         }
     }
 
