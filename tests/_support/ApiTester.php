@@ -20,7 +20,17 @@ class ApiTester extends \Codeception\Actor
 {
     use _generated\ApiTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Verifies the response code, JSON validity and JSON inclusion at once.
+     * @param int $code
+     * @param array $json
+     * @see seeResponseCodeIs
+     * @see seeResponseIsJson
+     * @see seeResponseContainsJson
+     */
+   public function seeCodeAndJson($code, array $json) {
+       $this->seeResponseCodeIs($code);
+       $this->seeResponseIsJson();
+       $this->seeResponseContainsJson($json);
+   }
 }
