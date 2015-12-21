@@ -29,12 +29,12 @@
     },
 
     "scripts": {
-        "test": "codecept run",
-        "testc": "codecept run --no-colors",
-        "test-debug": "codecept run --no-colors -vv",
+        "test": "vendor/bin/codecept run",
+        "testc": "vendor/bin/codecept run --no-colors",
+        "test-debug": "vendor/bin/codecept run --no-colors -vv",
 
         "post-install-cmd": [
-            "phinx migrate",
+            "vendor/bin/phinx migrate",
             "gulp --production"
         ]
     }
