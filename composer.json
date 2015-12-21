@@ -3,8 +3,16 @@
     "description": "VTEX Hiring test",
     "type": "project",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Santos",
+            "email": "igorsantos07@gmail.com"
+        }
+    ],
+
+    "minimum-stability": "stable",
     "require": {
-        "restler/framework": "^3.0",
+        "restler/framework": "dev-master#78aa233",
         "laravelbook/ardent": "^3.3",
         "robmorgan/phinx": "^0.5.0"
     },
@@ -13,15 +21,20 @@
         "fzaninotto/faker": "^1.6@dev",
         "heroku/heroku-buildpack-php": "*"
     },
-    "authors": [
-        {
-            "name": "Igor Santos",
-            "email": "igorsantos07@gmail.com"
+
+    "autoload": {
+        "psr-4": {
+            "Shop\\": "src/"
         }
-    ],
-    "minimum-stability": "stable",
+    },
+
     "scripts": {
+        "test": "codecept run",
+        "testc": "codecept run --no-colors",
+        "test-debug": "codecept run --no-colors -vv",
+
         "post-install-cmd": [
+            "phinx migrate",
             "gulp --production"
         ]
     }

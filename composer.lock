@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "902cd9293b5fa0809ec03ed5aed8e209",
+    "hash": "e08b7837a91c8c549d356fe1a9588174",
+    "content-hash": "c51d8f8fa112371f94a11ee97749d78e",
     "packages": [
         {
             "name": "danielstjules/stringy",
@@ -528,17 +529,17 @@
         },
         {
             "name": "restler/framework",
-            "version": "3.0.0",
+            "version": "dev-master",
             "target-dir": "Luracast/Restler",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Luracast/Restler-Framework.git",
-                "reference": "6ee10b3e5dbc6376916fed55ec2340a37cce436b"
+                "reference": "78aa233"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/Luracast/Restler-Framework/zipball/6ee10b3e5dbc6376916fed55ec2340a37cce436b",
-                "reference": "6ee10b3e5dbc6376916fed55ec2340a37cce436b",
+                "reference": "78aa233",
                 "shasum": ""
             },
             "require": {
@@ -598,7 +599,7 @@
                 "rest",
                 "server"
             ],
-            "time": "2015-08-04 07:52:49"
+            "time": "2015-08-04 17:00:43"
         },
         {
             "name": "robmorgan/phinx",
@@ -2664,6 +2665,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "restler/framework": 20,
         "fzaninotto/faker": 20
     },
     "prefer-stable": false,
