@@ -1,7 +1,5 @@
 <?php
-
-define('ENV', getenv('ENV')?: 'dev');
-define('PROD', ENV == 'prod');
+require 'constants.php';
 
 return [
     'database' => PROD?
