@@ -21,6 +21,7 @@ $db = $config['database'];
 
 /* ************************ CONFIGURES THE API OBJECTS ************************ */
 $r = new Luracast\Restler\Restler(PROD);
+$r->setBaseUrls('/api');
 
 $skip = ['.', '..'];
 foreach (scandir('../../src/API') as $file) {
@@ -29,6 +30,5 @@ foreach (scandir('../../src/API') as $file) {
         $r->addAPIClass("\\Shop\\API\\$name");
     }
 }
-
 $r->addAPIClass(\Luracast\Restler\Explorer::class);
 $r->handle();
