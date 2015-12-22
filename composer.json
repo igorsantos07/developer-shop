@@ -35,7 +35,8 @@
 
         "post-install-cmd": [
             "vendor/bin/phinx migrate",
-            "DISABLE_NOTIFIER=true gulp --production"
+            "DISABLE_NOTIFIER=true gulp --production",
+            "composer install -d www/tests"
         ]
     }
 }
