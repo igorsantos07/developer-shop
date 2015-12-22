@@ -3,7 +3,16 @@ modules:
     enabled:
         - \Helper\Api
         - Asserts
-        - REST:
+        - REST
+    config:
+        REST:
             depends: PhpBrowser
             url: http://devshop.dev/api/
             part: json
+
+env:
+    prod:
+        modules:
+            config:
+                REST:
+                    url: http://devshop.igorsantos.com.br/api/
