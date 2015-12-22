@@ -1,3 +1,0 @@
-[submodule "www/api/tests"]
-	path = www/api/tests
-	url = git@github.com:jayhealey/Webception.git
