@@ -1,4 +1,5 @@
 var React = require('react');
+var alertify = require('../../../node_modules/alertify.js/dist/js/alertify');
 
 var Form = React.createClass({
     getInitialState: ()=> ({
@@ -18,6 +19,7 @@ var Form = React.createClass({
         var $usernameParent = $('#username').parent('.form-group');
         if (!username) {
             $usernameParent.addClass('has-error');
+            alertify.logPosition('top right').log('You need to fill at least the developer username');
             return false;
         } else {
             $usernameParent.removeClass('has-error');

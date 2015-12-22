@@ -10,7 +10,17 @@ var CartTable = require('./cart-table');
 
 
 var CartBlock = React.createClass({
-    getInitialState: ()=> ({ products: [] }),
+    getInitialState: ()=> (
+        { products: null }
+    ),
+
+    componentDidMount: function() {
+        API.get('cart')
+            .then((data)=> {
+                this.state.products = data.items;
+                this.setState(this.state);
+            });
+    },
 
     addDeveloper: function(username, price) {
         var product = {
@@ -22,7 +32,7 @@ var CartBlock = React.createClass({
         this.state.products = this.state.products.concat([$.extend({ id: Date.now() }, product)]);
         this.setState(this.state);
 
-        return API.put('casrt', product)
+        return API.put('cart', product)
             .success((data)=> {
                 this.state.products[this.state.products.length - 1].id = data.id;
                 this.setState(this.state);
@@ -30,7 +40,7 @@ var CartBlock = React.createClass({
             .fail(()=> {
                 this.state.products = prev_products;
                 this.setState(this.state);
-                alertify.logPosition('top right').error('Ops... Houve um problema ao adicionar o item ao carrinho :(');
+                alertify.logPosition('top right').error('Whoops... We had some issues trying to add that item :(');
             });
     },
 

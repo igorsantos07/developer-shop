@@ -7,23 +7,30 @@ var utils = require('./utils');
  */
 var CartTable = React.createClass({
     render: function() {
-        var lines;
-        if (this.props.products.length > 0) {
-            lines = this.props.products.map((prod)=> {
-                //FIXME: is there a way to avoid passing a passed prop down? (onRemove)
-                return (
-                    <CartTable.ProductLine price={prod.price} key={prod.id} id={prod.id} onRemove={this.props.onRemove}>
-                        {prod.item}
-                    </CartTable.ProductLine>
-                );
-            });
+        var lines, total;
+        if (this.props.products) {
+            total = this.props.products.reduce((total, prod)=> { return total + prod.price }, 0);
+
+            if (this.props.products.length > 0) {
+                lines = this.props.products.map((prod)=> {
+                    //FIXME: is there a way to avoid passing a passed prop down? (onRemove)
+                    return (
+                        <CartTable.ProductLine price={prod.price} key={prod.id} id={prod.id} onRemove={this.props.onRemove}>
+                            {prod.item}
+                        </CartTable.ProductLine>
+                    );
+                });
+            } else {
+                lines = <tr><td colSpan="3">Your cart is empty :(</td></tr>;
+            }
         } else {
-            lines = <tr><td colSpan="3">Your cart is empty :(</td></tr>;
+            total = 0;
+            lines = <tr><td colSpan="3">Loading...</td></tr>;
         }
 
-        var total = this.props.products.reduce((total, prod)=> { return total + prod.price }, 0);
 
         return (
+
             <table className="table">
                 <thead>
                 <tr>
