@@ -11,7 +11,7 @@ var Form = React.createClass({
     handleSubmit: function(e) {
         e.preventDefault();
 
-        //we cannot mutate the state values in the handle functions directly as they would affect the input UX
+        //we cannot mutate state values in the handle functions directly as they would affect the input UX
         var username = this.state.username.trim();
         var price    = parseFloat(this.state.price) || '';
 
@@ -23,8 +23,10 @@ var Form = React.createClass({
             $usernameParent.removeClass('has-error');
         }
 
-        this.props.onSubmit(username, price);
+        var prev_state = this.state;
         this.setState(this.getInitialState());
+        this.props.onSubmit(username, price)
+            .fail(()=> this.setState(prev_state));
     },
 
     render: function() {

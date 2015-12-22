@@ -12,8 +12,8 @@ var CartTable = React.createClass({
             lines = this.props.products.map((prod)=> {
                 //FIXME: is there a way to avoid passing a passed prop down? (onRemove)
                 return (
-                    <CartTable.ProductLine price={prod.price} id={prod.id} onRemove={this.props.onRemove}>
-                        {prod.name}
+                    <CartTable.ProductLine price={prod.price} key={prod.id} id={prod.id} onRemove={this.props.onRemove}>
+                        {prod.item}
                     </CartTable.ProductLine>
                 );
             });
@@ -55,13 +55,17 @@ var CartTable = React.createClass({
  * @property {function} onRemove
  */
 CartTable.ProductLine = React.createClass({
+    onRemove: function() {
+        return this.props.onRemove(this.props.id);
+    },
+
     render: function () {
         return (
             <tr className="product">
                 <td>{this.props.children}</td>
                 <td>{utils.priceFormat(this.props.price)}</td>
                 <td>
-                    <button className="btn btn-danger pull-right" onClick={this.props.onRemove.bind(this, this.props.id)}>
+                    <button className="btn btn-danger pull-right" onClick={this.onRemove}>
                         <i className="glyphicon glyphicon-trash" />&nbsp;
                         Remove
                     </button>
