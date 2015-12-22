@@ -64,7 +64,10 @@ $app = new \Slim\Slim(array(
 
 $basePath = '/tests';
 $length   = strlen($basePath);
-$path = substr($_SERVER['REQUEST_URI'], $length, strpos($_SERVER['REQUEST_URI'], '?') - $length);
+$hasQuery = strpos($_SERVER['REQUEST_URI'], '?');
+$path     = substr($_SERVER['REQUEST_URI'], $length);
+$path     = substr($path, 0, $hasQuery? $hasQuery-$length : strlen($path))?: '/';
+$path     = rtrim($path, '/');
 $app->environment['SCRIPT_NAME'] = $basePath;
 $app->environment['PATH_INFO'] = $path;
 
