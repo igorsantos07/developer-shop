@@ -45,4 +45,25 @@ class Cart {
         return $item->getAttributes();
     }
 
+    /**
+     * Clears up the cart.
+     * @status 204
+     * @return void
+     */
+    public function delete() {
+        $items = Item::where('order_id', $this->getOrder(false)->id)->get();
+        $ids   = array_column($items->toArray(), 'id');
+        Item::destroy($ids);
+    }
+
+    /**
+     * Deletes an item from the cart.
+     * @param int $id ID for the item to be deleted
+     * @status 204
+     * @return void
+     */
+    public function deleteItem($id) {
+        Item::destroy($id);
+    }
+
 }
