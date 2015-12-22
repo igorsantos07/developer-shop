@@ -16,7 +16,7 @@ var CartBlock = React.createClass({
 
     componentDidMount: function() {
         API.get('cart')
-            .then((data)=> {
+            .then(data => {
                 this.state.products = data.items;
                 this.setState(this.state);
             });
@@ -33,7 +33,7 @@ var CartBlock = React.createClass({
         this.setState(this.state);
 
         return API.put('cart', product)
-            .success((data)=> {
+            .success(data => {
                 this.state.products[this.state.products.length - 1].id = data.id;
                 this.setState(this.state);
             })
@@ -45,8 +45,15 @@ var CartBlock = React.createClass({
     },
 
     removeDeveloper: function(id) {
+        var prev_products = this.state.products;
         this.state.products = this.state.products.filter(prod => prod.id != id);
         this.setState(this.state);
+
+        API.delete('cart/item/'+id)
+            .fail(() => {
+                this.state.products = prev_products;
+                this.setState(this.state);
+            });
     },
 
     render: function() {

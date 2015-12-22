@@ -28,9 +28,7 @@ var CartTable = React.createClass({
             lines = <tr><td colSpan="3">Loading...</td></tr>;
         }
 
-
         return (
-
             <table className="table">
                 <thead>
                 <tr>
