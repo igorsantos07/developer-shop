@@ -1,4 +1,8 @@
 <?php
+$I = new ApiTester($scenario);
+$I->wantTo('Test the cart behaviour with items');
+
+/* ********************************************************** */
 $devs = \Codeception\Util\Fixtures::get('devs');
 $gen_item = function() use ($devs) {
     return [
@@ -6,13 +10,13 @@ $gen_item = function() use ($devs) {
         'price' => rand(10.01, 1000.99),
     ];
 };
+/* ********************************************************** */
 
-$I = new ApiTester($scenario);
-$I->wantTo('see the cart empty');
+$I->amGoingTo('add items to cart');
 $I->sendGET('cart');
 $I->seeCodeAndJson(200, ['items' => [], 'total' => 0]);
 
-$I->wantTo('add items to cart');
+$I->amGoingTo('add items to cart');
 $item = $gen_item();
 $I->sendPUT('cart', $item);
 $I->seeCodeAndJson(201, $item);
