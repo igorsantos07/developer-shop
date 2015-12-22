@@ -29,6 +29,17 @@
 
     <div id="cart-container"></div>
 
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="/api/explorer"><i class="glyphicon glyphicon-console"></i> API Explorer</a></li>
+                <li><a href="/tests"><i class="glyphicon glyphicon-ok-sign"></i> Testes da API</a></li>
+                <li><a href="https://github.com/igorsantos07/developer-shop"><i class="glyphicon glyphicon-folder-open"></i> GitHub</a></li>
+                <li><a href="https://github.com/igorsantos07/developer-shop/issues"><i class="glyphicon glyphicon-alert"></i> Issues</a></li>
+                <li><a href="http://igorsantos.com.br"><i class="glyphicon glyphicon-user"></i> by igorsantos07</a></li>
+            </ul>
+        </div>
+    </nav>
 </div> <!-- /container -->
 
 <? if (PROD): ?>
