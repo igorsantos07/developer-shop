@@ -64,9 +64,12 @@ var CartBlock = React.createClass({
                 </BS.Panel>
             </div>
 
-            <div className="col-sm-7">
-                <h2>Cart</h2>
-                <CartTable products={this.state.products} onRemove={this.removeDeveloper}/>
+            <div className="col-sm-7" id="cartbox">
+                <div className="panel-title panel-heading" title="Cart"> {/* weird classes just to get a gray box */}
+
+                    <h2>Cart</h2>
+                    <CartTable products={this.state.products} onRemove={this.removeDeveloper}/>
+                </div>
             </div>
         </div>);
     }

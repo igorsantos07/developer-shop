@@ -43,12 +43,15 @@ var Form = React.createClass({
 
                 <div className="form-group">
                     <label className="control-label" htmlFor="price">Price:</label>
-                    <input type="text" id="price" className="form-control"
-                           value={this.state.price} onChange={this.handlePriceChange}/>
+                    <div className="input-group">
+                        <div className="input-group-addon">$</div>
+                        <input type="number" id="price" className="form-control"
+                               value={this.state.price} onChange={this.handlePriceChange}/>
+                    </div>
                 </div>
 
                 <button type="submit" className="btn btn-success">
-                    <i className="glyphicon glyphicon-shopping-cart"/> Add
+                    <i className="glyphicon glyphicon-shopping-cart"/> Add to cart
                 </button>
             </form>
         );
