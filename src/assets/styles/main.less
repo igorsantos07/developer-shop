@@ -19,6 +19,21 @@ label {
 	}
 }
 
+#cartTable {
+	th, td {
+		vertical-align: middle;
+	}
+	.btn.btn-info {
+		@iconPadding: 2px;
+		i.glyphicon:first-child { padding-right: @iconPadding; }
+		i.glyphicon:last-child { padding-left: @iconPadding; }
+	}
+}
+
+dt, dd {
+	display: inline;
+}
+
 footer {
 	margin-top: 40px;
 }

@@ -34,7 +34,6 @@ var Form = React.createClass({
     render: function() {
         return (
             <form className="form" onSubmit={this.handleSubmit}>
-
                 <div className="form-group">
                     <label className="control-label" htmlFor="username">GitHub username<sup>*</sup>:</label>
                     <input type="text" id="username" className="form-control"

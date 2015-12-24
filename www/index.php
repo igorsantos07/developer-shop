@@ -17,7 +17,6 @@
     <? else: ?>
         <link rel="stylesheet" href="/lib/bootstrap/bootstrap.css">
     <? endif ?>
-
     <link rel="stylesheet" href="/main.css">
 </head>
 

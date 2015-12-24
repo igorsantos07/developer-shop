@@ -66,4 +66,13 @@ class Cart {
         Item::destroy($id);
     }
 
+    /**
+     * Checkout: closes the order.
+     */
+    public function patch() {
+        return [
+            'id' => 10,
+            'total' => 111.99
+        ];
+    }
 }

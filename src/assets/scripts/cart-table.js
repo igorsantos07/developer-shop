@@ -4,6 +4,7 @@ var utils = require('./utils');
 /**
  * @property {Array} products
  * @property {function} onRemove
+ * @property {function} onCheckout
  */
 var CartTable = React.createClass({
     render: function() {
@@ -29,7 +30,7 @@ var CartTable = React.createClass({
         }
 
         return (
-            <table className="table">
+            <table className="table" id="cartTable">
                 <thead>
                 <tr>
                     <th>Username</th>
@@ -44,7 +45,13 @@ var CartTable = React.createClass({
                     <tr>
                         <th>Total</th>
                         <th>{utils.priceFormat(total, true)}</th>
-                        <th/>
+                        <th>
+                            <button className="btn btn-primary pull-right" onClick={this.props.onCheckout}>
+                                <i className="glyphicon glyphicon-credit-card"/>
+                                &nbsp;Checkout
+                                <i className="glyphicon glyphicon-menu-right"/>
+                            </button>
+                        </th>
                     </tr>
                 </tfoot>
             </table>
@@ -70,10 +77,10 @@ CartTable.ProductLine = React.createClass({
                 <td>{this.props.children}</td>
                 <td>{utils.priceFormat(this.props.price)}</td>
                 <td>
-                    <button className="btn btn-danger pull-right" onClick={this.onRemove}>
-                        <i className="glyphicon glyphicon-trash" />&nbsp;
-                        Remove
+                    <button className="btn btn-warning pull-right" onClick={this.onRemove}>
+                        <i className="glyphicon glyphicon-trash" />
                     </button>
+
                 </td>
             </tr>
         );

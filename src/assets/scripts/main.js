@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var utils = require('./utils');
 
 var BS = require('./bootstrap/all');
 var alertify = require('../../../node_modules/alertify.js/dist/js/alertify');
@@ -56,6 +57,33 @@ var CartBlock = React.createClass({
             });
     },
 
+    checkout: function() {
+        API.patch('cart')
+            .success(data => {
+                $('tr.product').fadeOut('slow', 'swing', ()=> {
+                    this.state.products = [];
+                    this.setState(this.state);
+                });
+
+                alertify
+                    .theme('bootstrap')
+                    .okBtn('Yey!')
+                    .alert('<h1>Order closed!</h1>'+
+                        '<p>You\'ll soon receive an email with the next steps.</p>'+
+                        '<dl>' +
+                            '<dt>Order number</dt>: <dd>#'+data.id+'</dd><br/>' +
+                            '<dt>Order total</dt>:  <dd>'+utils.priceFormat(data.total)+'</dd>' +
+                        '</dl>');
+                console.log(data);
+            })
+            .fail(()=> {
+                alertify
+                    .theme('bootstrap')
+                    .okBtn('Okay...')
+                    .alert('Whoops... We had some trouble finishing your order. Would you try again later, please?');
+            })
+    },
+
     render: function() {
         return (<div className="row">
             <div className="col-sm-5">
@@ -68,7 +96,7 @@ var CartBlock = React.createClass({
                 <div className="panel-title panel-heading" title="Cart"> {/* weird classes just to get a gray box */}
 
                     <h2>Cart</h2>
-                    <CartTable products={this.state.products} onRemove={this.removeDeveloper}/>
+                    <CartTable products={this.state.products} onRemove={this.removeDeveloper} onCheckout={this.checkout}/>
                 </div>
             </div>
         </div>);
