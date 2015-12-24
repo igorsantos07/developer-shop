@@ -76,11 +76,19 @@ var CartBlock = React.createClass({
                         '</dl>');
                 console.log(data);
             })
-            .fail(()=> {
-                alertify
-                    .theme('bootstrap')
-                    .okBtn('Okay...')
-                    .alert('Whoops... We had some trouble finishing your order. Would you try again later, please?');
+            .fail(xhr => {
+                var msg;
+                switch (xhr.status) {
+                    case 406:
+                        msg = 'Hey, it seems your cart is empty!';
+                    break;
+
+                    default:
+                        msg = 'Whoops... We had some trouble finishing your order. Would you try again later, please?';
+                    break;
+                }
+
+                alertify.theme('bootstrap').okBtn('Okay...').alert(msg);
             })
     },
 
