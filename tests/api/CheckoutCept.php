@@ -15,3 +15,7 @@ $I->seeCodeAndJson(200, [
     'id'    => $order,
     'total' => $item1['price'] + $item2['price']
 ]);
+
+$I->amGoingTo('verify the order was really ~closed~');
+$I->sendGET('cart');
+$I->assertEquals(sizeof(json_decode($I->grabResponse())->items), 0, 'verify the cart is now empty');

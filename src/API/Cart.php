@@ -1,5 +1,7 @@
 <?php namespace Shop\API;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Luracast\Restler\RestException;
 use Shop\Model\Item;
 use Shop\Model\Order;
 
@@ -11,13 +13,12 @@ class Cart {
      * @return Order
      */
     private function getOrder($eager = true) {
-        $data = ['session' => session_id()];
+        $data = ['session' => session_id(), 'closed' => Order::ST_OPEN];
 
         //unable to use firstOrCreate() along with with()
         try {
             return Order::with($eager? 'items' : [])->where($data)->firstOrFail();
-        }
-        catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return Order::create($data)->fresh(); //fresh() so we get the default info from the DB as well
         }
     }
@@ -36,12 +37,12 @@ class Cart {
     /**
      * Adds an item to the cart.
      * @status 201
-     * @param string $item The item name {@from body}
-     * @param float $price The item price {@from body}
+     * @param string $item  The item name {@from body}
+     * @param float  $price The item price {@from body}
      * @return Item
      */
     public function put($item, $price) {
-        $item  = $this->getOrder(false)->items()->create(compact('item', 'price'));
+        $item = $this->getOrder(false)->items()->create(compact('item', 'price'));
         return $item->getAttributes();
     }
 
@@ -68,11 +69,14 @@ class Cart {
 
     /**
      * Checkout: closes the order.
+     * @throws 406 Not_Acceptable In case the cart is empty
      */
     public function patch() {
-        return [
-            'id' => 10,
-            'total' => 111.99
-        ];
+        $order = $this->getOrder();
+        if (!sizeof($order->items)) {
+            throw new RestException(HTTP_NOT_ACCEPTABLE, 'There are no items in the cart to checkout');
+        }
+        $order->update(['closed' => Order::ST_CLOSED]);
+        return $order->toArray();
     }
 }

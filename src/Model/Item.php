@@ -1,10 +1,10 @@
 <?php namespace Shop\Model;
 
 /**
- * @property string $item Item name
- * @property float $price Item price
- * @property int $order_id The order ID
- * @property Order $order
+ * @property string $item     Item name
+ * @property float  $price    Item price
+ * @property int    $order_id The order ID
+ * @property Order  $order
  */
 class Item extends Base {
 
@@ -23,7 +23,7 @@ class Item extends Base {
      * @param $price
      */
     public function setPriceAttribute($price) {
-        $this->old_price = $this->price;
+        $this->old_price           = $this->price;
         $this->attributes['price'] = $price;
     }
 
@@ -44,5 +44,4 @@ class Item extends Base {
         $this->order->total -= $this->price;
         $this->order->save();
     }
-
 }
