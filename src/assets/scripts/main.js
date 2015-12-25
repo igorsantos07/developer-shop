@@ -4,6 +4,7 @@ var utils = require('./utils');
 
 var BS = require('./bootstrap/all');
 var alertify = require('../../../node_modules/alertify.js/dist/js/alertify');
+alertify.logPosition('top right').theme('bootstrap');
 
 var API = require('./api');
 var Form = require('./add-developer');
@@ -41,7 +42,7 @@ var CartBlock = React.createClass({
             .fail(()=> {
                 this.state.products = prev_products;
                 this.setState(this.state);
-                alertify.logPosition('top right').error('Whoops... We had some issues trying to add that item :(');
+                alertify.error('Whoops... We had some issues trying to add that item :(');
             });
     },
 
@@ -66,7 +67,6 @@ var CartBlock = React.createClass({
                 });
 
                 alertify
-                    .theme('bootstrap')
                     .okBtn('Yey!')
                     .alert('<h1>Order closed!</h1>'+
                         '<p>You\'ll soon receive an email with the next steps.</p>'+
@@ -88,7 +88,7 @@ var CartBlock = React.createClass({
                     break;
                 }
 
-                alertify.theme('bootstrap').okBtn('Okay...').alert(msg);
+                alertify.okBtn('Okay...').alert(msg);
             })
     },
 
