@@ -17,6 +17,10 @@ return [
             'user' => 'devshop',
             'pass' => 'devshop',
             'name' => 'devshop',
-        ]
+        ],
 
+    //important to keep an array of arrays, since we might have multiple memcache servers
+    'memcached' => PROD?
+        [['cache-aws-us-east-1.iron.io', 11211]] :
+        [['localhost', 11211]]
 ];

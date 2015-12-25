@@ -5,6 +5,13 @@ define('PROD', ENV == 'prod');
 const GITHUB_CLIENT = 'c18f329b3b32a06159f9';
 const GITHUB_SECRET = '6bd92e4ec00d569dba1d5589ead3e9798a37830d';
 
+const ONE_MINUTE = 60;
+const ONE_HOUR   = 60 * ONE_MINUTE;
+const ONE_DAY    = 24 * ONE_HOUR;
+const ONE_WEEK   =  7 * ONE_DAY;
+const ONE_MONTH  = 30 * ONE_DAY;
+const ONE_YEAR   =365 * ONE_DAY;
+
 // HTTP codes for success responses
 const HTTP_OK         = 200;
 const HTTP_CREATED    = 201;

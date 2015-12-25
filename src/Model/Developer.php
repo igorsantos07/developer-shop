@@ -116,36 +116,57 @@ class Developer {
      * @todo commit counting is not working correctly, as they are paged and we're getting at most 30 per repo
      */
     protected function calculateHourlyRate() {
-        $clear_github_url = function($url) {
-            return preg_replace('|\{.*\}|', '', $url);
-        };
+        $rates = $GLOBALS['cache']->get('rates.'.$this->username);
+        if (!$rates) {
+            $rates = $this->rateDetails;
+            $clear_github_url = function($url) {
+                return preg_replace('|\{.*\}|', '', $url);
+            };
 
-        $this->rateDetails['following'] = $this->following * 0.1;
-        $this->rateDetails['followers'] = $this->followers * 0.2;
+            $rates['following'] = $this->following * 0.1;
+            $rates['followers'] = $this->followers * 0.2;
 
-        $gists = $this->github->get($clear_github_url($this->urls['gists']));
-        foreach (json_decode($gists->getBody(), true) as $gist) {
-            $this->rateDetails['gists'] += 0.3;
-            $this->rateDetails['gist_comments'] += $gist['comments'] * 0.01;
-            $forks   = json_decode($this->github->get($gist['forks_url'])->getBody(), true);
-            $commits = json_decode($this->github->get($gist['commits_url'])->getBody(), true);
-            $this->rateDetails['gist_forks']   += sizeof($forks) * 0.1;
-            $this->rateDetails['gist_commits'] += sizeof($commits) * 0.01;
-//            $this->rateDetails['total_commits'][$gist['id']] = sizeof($commits);
+            $gists = $this->github->get($clear_github_url($this->urls['gists']));
+            foreach (json_decode($gists->getBody(), true) as $gist) {
+                $rates['gists'] += 0.3;
+                $rates['gist_comments'] += $gist['comments'] * 0.01;
+                $forks   = json_decode($this->github->get($gist['forks_url'])->getBody(), true);
+                try {
+                    $commits = json_decode($this->github->get($gist['commits_url'])->getBody(), true);
+                    $rates['gist_forks']   += sizeof($forks) * 0.1;
+                    $rates['gist_commits'] += sizeof($commits) * 0.01;
+//                    $rates['total_commits'][$gist['id']] = sizeof($commits);
+                }
+                catch (ClientException $e) {
+                    //a 409 means there are no commits
+                    //TODO: any other error means we won't get commits anyway, so let's just zero this
+                    //there is no docs in the API regarding error codes :(
+                }
+            }
+
+            $repos = $this->github->get($clear_github_url($this->urls['repos']));
+            foreach (json_decode($repos->getBody(), true) as $repo) {
+                $rates['repos']         += 0.5;
+                $rates['repo_stars']    += $repo['stargazers_count'] * 0.02;
+                $rates['repo_watchers'] += ($repo['watchers_count'] - $repo['stargazers_count']) * 0.02;
+                $rates['repo_forks']    += $repo['forks_count'] * 0.2;
+                try {
+                    $commits = json_decode($this->github->get($clear_github_url($repo['commits_url']))->getBody(), true);
+                    $rates['repo_commits'] += sizeof($commits) * 0.02;
+//                    $rates['total_commits'][$repo['id']] = sizeof($commits);
+                }
+                catch (ClientException $e) {
+                    //a 409 means there are no commits
+                    //TODO: any other error means we won't get commits anyway, so let's just zero this
+                    //there is no docs in the API regarding error codes :(
+                }
+            }
+
+            $GLOBALS['cache']->set('rates.'.$this->username, $rates, ONE_WEEK);
         }
 
-        $repos = $this->github->get($clear_github_url($this->urls['repos']));
-        foreach (json_decode($repos->getBody(), true) as $repo) {
-            $this->rateDetails['repos']         += 0.5;
-            $this->rateDetails['repo_stars']    += $repo['stargazers_count'] * 0.02;
-            $this->rateDetails['repo_watchers'] += ($repo['watchers_count'] - $repo['stargazers_count']) * 0.02;
-            $this->rateDetails['repo_forks']    += $repo['forks_count'] * 0.2;
-            $commits = json_decode($this->github->get($clear_github_url($repo['commits_url']))->getBody(), true);
-            $this->rateDetails['repo_commits'] += sizeof($commits) * 0.02;
-//            $this->rateDetails['total_commits'][$repo['id']] = sizeof($commits);
-        }
-
-        $this->rate = array_sum($this->rateDetails);
+        $this->rateDetails = $rates;
+        $this->rate = array_sum($rates);
     }
 
 }

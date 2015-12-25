@@ -5,6 +5,9 @@ $config = require_once '../../src/config/config.php';
 
 session_start();
 
+$GLOBALS['cache'] = new Memcached;
+$GLOBALS['cache']->addServers($config['memcached']);
+
 /* ************************ CONFIGURES DATABASE ACCESS ************************ */
 $db = $config['database'];
 \LaravelArdent\Ardent\Ardent::configureAsExternal([
