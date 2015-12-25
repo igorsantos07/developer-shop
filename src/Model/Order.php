@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property float             total   Total cart price to be paid
  * @property bool              closed  0 if the cart is open, 1 if the order was closed
  * @property Collection|Item[] items   List of items in the cart
- * @method HasMany items xxxx
+ * @method HasMany items
  */
 class Order extends Base {
 

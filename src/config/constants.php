@@ -2,6 +2,9 @@
 define('ENV', getenv('ENV')?: 'dev');
 define('PROD', ENV == 'prod');
 
+const GITHUB_CLIENT = 'c18f329b3b32a06159f9';
+const GITHUB_SECRET = '6bd92e4ec00d569dba1d5589ead3e9798a37830d';
+
 // HTTP codes for success responses
 const HTTP_OK         = 200;
 const HTTP_CREATED    = 201;

@@ -15,5 +15,5 @@ $I->amGoingTo('Get an existent user');
 $I->sendGET('dev/'.$devs[array_rand($devs)]);
 $I->seeResponseCodeIs(200);
 $dev = json_decode($I->grabResponse());
-$I->assertTrue(is_numeric($dev->price), 'price is numeric');
+$I->assertTrue(is_numeric($dev->rate), 'rate is numeric');
 $I->assertTrue(is_string($dev->username) && strlen($dev->username) != 0, 'username is present and is string');
