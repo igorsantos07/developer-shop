@@ -52,10 +52,18 @@ label {
 }
 
 #cartTable {
+	margin-bottom: 0;
+
+	th {
+		white-space: nowrap;
+	}
 	th, td {
 		vertical-align: middle;
+		&:last-child {
+			text-align: right;
+		}
 	}
-	.btn.btn-info {
+	.btn {
 		@iconPadding: 2px;
 		i.glyphicon:first-child { padding-right: @iconPadding; }
 		i.glyphicon:last-child { padding-left: @iconPadding; }

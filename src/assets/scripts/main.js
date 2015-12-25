@@ -58,6 +58,15 @@ var CartBlock = React.createClass({
             });
     },
 
+    setCoupon: function(e) {
+        this.state.coupon = e.target.value;
+        this.setState(this.state);
+    },
+
+    submitCoupon: function() {
+        console.log(this.state.coupon);
+    },
+
     checkout: function() {
         API.patch('cart')
             .success(data => {
@@ -104,7 +113,9 @@ var CartBlock = React.createClass({
                 <div className="panel-title panel-heading" title="Cart"> {/* weird classes just to get a gray box */}
 
                     <h2>Cart</h2>
-                    <CartTable products={this.state.products} onRemove={this.removeDeveloper} onCheckout={this.checkout}/>
+                    <CartTable products={this.state.products}
+                               onRemove={this.removeDeveloper} onCheckout={this.checkout}
+                               onCoupon={this.setCoupon} onCouponSubmit={this.submitCoupon}/>
                 </div>
             </div>
         </div>);

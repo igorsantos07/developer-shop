@@ -5,6 +5,7 @@ var utils = require('./utils');
  * @property {Array} products
  * @property {function} onRemove
  * @property {function} onCheckout
+ * @property {function} onCoupon
  */
 var CartTable = React.createClass({
     render: function() {
@@ -43,12 +44,22 @@ var CartTable = React.createClass({
 
                 <tfoot>
                     <tr>
+                        <th title="Tip: SHIPIT">Got a coupon?</th>
+                        <td><input className="form-control" onChange={this.props.onCoupon}/></td>
+                        <td>
+                            <button className="btn btn-info" onClick={this.props.onCouponSubmit}>
+                                <i className="glyphicon glyphicon-usd"/>
+                                Calculate
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Total</th>
                         <th>{utils.priceFormat(total, true)}</th>
                         <th>
-                            <button className="btn btn-primary pull-right" onClick={this.props.onCheckout}>
+                            <button className="btn btn-success" onClick={this.props.onCheckout}>
                                 <i className="glyphicon glyphicon-credit-card"/>
-                                &nbsp;Checkout
+                                Checkout
                                 <i className="glyphicon glyphicon-menu-right"/>
                             </button>
                         </th>
@@ -77,7 +88,7 @@ CartTable.ProductLine = React.createClass({
                 <td>{this.props.children}</td>
                 <td>{utils.priceFormat(this.props.price)}</td>
                 <td>
-                    <button className="btn btn-warning pull-right" onClick={this.onRemove}>
+                    <button className="btn btn-warning" onClick={this.onRemove}>
                         <i className="glyphicon glyphicon-trash" />
                     </button>
 
