@@ -114,6 +114,7 @@ class Developer {
      * @todo should we remove some cents for each issue on the repos?
      * @todo improve performance by leveraging async and batch requests
      * @todo commit counting is not working correctly, as they are paged and we're getting at most 30 per repo
+     * @todo what about collaborations on other repositories? do the API contains this sort of information as well?
      */
     protected function calculateHourlyRate() {
         $rates = $GLOBALS['cache']->get('rates.'.$this->username);
@@ -151,7 +152,8 @@ class Developer {
                 $rates['repo_watchers'] += ($repo['watchers_count'] - $repo['stargazers_count']) * 0.02;
                 $rates['repo_forks']    += $repo['forks_count'] * 0.2;
                 try {
-                    $commits = json_decode($this->github->get($clear_github_url($repo['commits_url']))->getBody(), true);
+                    $commits_url = $clear_github_url($repo['commits_url']).'?author='.$this->username;
+                    $commits = json_decode($this->github->get($commits_url)->getBody(), true);
                     $rates['repo_commits'] += sizeof($commits) * 0.02;
 //                    $rates['total_commits'][$repo['id']] = sizeof($commits);
                 }
