@@ -20,11 +20,11 @@ class Item extends Base {
      */
     public function setPriceAttribute($price) {
         $this->old_price           = $this->price;
-        $this->attributes['price'] = $price;
+        $this->attributes['price'] = self::monetary($price);
     }
 
     public function getPriceAttribute() {
-        return isset($this->attributes['price'])? $this->attributes['price'] : 0;
+        return self::monetary(isset($this->attributes['price'])? $this->attributes['price'] : 0);
     }
 
     /**

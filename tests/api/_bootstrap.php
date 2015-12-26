@@ -14,3 +14,12 @@ Fixtures::add('coupons', [
     ['code' => 'SHIPIT', 'discount' => 0.20],
     ['code' => 'NOTTHIS', 'discount' => 0.01]
 ]);
+
+/**
+ * Turns bad floats into stringified floats, that will contain precisely 2 decimal places.
+ * @param $number
+ * @return string
+ */
+function floatify($number) {
+    return number_format($number, 2, '.', '');
+}

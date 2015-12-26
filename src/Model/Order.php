@@ -1,5 +1,4 @@
 <?php namespace Shop\Model;
-
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,10 +18,6 @@ class Order extends Base {
 
     const ST_OPEN = 0;
     const ST_CLOSED = 1;
-
-    protected $casts = [
-        'total' => 'float'
-    ];
 
     public static $relationsData = [
         'items'  => [self::HAS_MANY, Item::class],
@@ -44,5 +39,9 @@ class Order extends Base {
         }
 
         $this->attributes['coupon_id'] = $id;
+    }
+
+    public function getTotalAttribute() {
+        return self::monetary($this->attributes['total']);
     }
 }

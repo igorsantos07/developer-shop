@@ -13,7 +13,7 @@ $I->amGoingTo('checkout');
 $I->sendPATCH('cart');
 $I->seeCodeAndJson(200, [
     'id'    => $order,
-    'total' => $item1['price'] + $item2['price']
+    'total' => floatify($item1['price'] + $item2['price'])
 ]);
 
 $I->amGoingTo('verify the order was really ~closed~');

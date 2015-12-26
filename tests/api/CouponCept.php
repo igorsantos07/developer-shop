@@ -25,7 +25,7 @@ $I->seeResponseCodeIs(HTTP_OK);
 $I->seeResponseEquals($coupons[0]['discount']);
 $I->sendGET('cart');
 $I->seeResponseContainsJson([
-    'total' => ($item1['price'] + $item2['price']) * (1 - $coupons[0]['discount'])
+    'total' => floatify(($item1['price'] + $item2['price']) * (1 - $coupons[0]['discount']))
 ]);
 
 $I->amGoingTo('add a new item to see the price discount');
@@ -33,7 +33,7 @@ $item3 = $gen_item();
 $I->sendPUT('cart', $item3);
 $I->sendGET('cart');
 $I->seeResponseContainsJson([
-    'total' => ($item1['price'] + $item2['price'] + $item3['price']) * (1 - $coupons[0]['discount'])
+    'total' => floatify(($item1['price'] + $item2['price'] + $item3['price']) * (1 - $coupons[0]['discount']))
 ]);
 
 
@@ -56,7 +56,7 @@ $I->seeResponseCodeIs(HTTP_EXPECTATION_FAILED);
 $I->amGoingTo('verify order value without discounts');
 $I->sendGET('cart');
 $I->seeResponseContainsJson([
-    'total' => $item1['price'] + $item2['price'] + $item3['price']
+    'total' => floatify($item1['price'] + $item2['price'] + $item3['price'])
 ]);
 
 //TODO: we should not test a checkout with the coupon since this would be an integration test (?), and we're already testing the order total up there anyway

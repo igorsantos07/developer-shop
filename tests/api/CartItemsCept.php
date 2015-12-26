@@ -4,7 +4,7 @@ $I->wantTo('Test the cart behaviour with items');
 
 $I->amGoingTo('confirm the cart is empty');
 $I->sendGET('cart');
-$I->seeCodeAndJson(200, ['items' => [], 'total' => 0]);
+$I->seeCodeAndJson(200, ['items' => [], 'total' => floatify(0)]);
 
 /**
  * @var array $item1
@@ -18,18 +18,18 @@ $I->sendGET('cart');
 $I->expectTo('see items in order');
 $I->seeCodeAndJson(200, ['items' => [$item1, $item2]]);
 $I->expectTo('see correct total');
-$I->seeResponseContainsJson(['total' => $item1['price'] + $item2['price']]);
+$I->seeResponseContainsJson(['total' => floatify($item1['price'] + $item2['price'])]);
 
 $I->amGoingTo('delete an item');
 $I->sendDELETE('cart/item/'.$item_id);
 $I->seeResponseCodeIs(204);
 $I->seeResponseEquals('');
 $I->sendGET('cart');
-$I->seeCodeAndJson(200, ['items' => [$item2], 'total' => $item2['price']]);
+$I->seeCodeAndJson(200, ['items' => [$item2], 'total' => floatify($item2['price'])]);
 
 $I->amGoingTo('clear the cart');
 $I->sendDELETE('cart');
 $I->seeResponseCodeIs(204);
 $I->seeResponseEquals('');
 $I->sendGET('cart');
-$I->seeCodeAndJson(200, ['items' => [], 'total' => 0]);
+$I->seeCodeAndJson(200, ['items' => [], 'total' => floatify(0)]);

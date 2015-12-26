@@ -3,7 +3,7 @@ $devs = \Codeception\Util\Fixtures::get('devs');
 $gen_item = function() use ($devs) {
     return [
         'item'  => $devs[array_rand($devs)],
-        'price' => rand(10.01, 1000.99),
+        'price' => floatify(rand(10.01, 1000.99)),
     ];
 };
 
