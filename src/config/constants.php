@@ -24,6 +24,8 @@ const HTTP_FORBIDDEN          = 403;
 const HTTP_NOT_FOUND          = 404;
 const HTTP_METHOD_NOT_ALLOWED = 405;
 const HTTP_NOT_ACCEPTABLE     = 406;
+const HTTP_CONFLICT           = 409;
+const HTTP_EXPECTATION_FAILED = 412;
 const HTTP_TOO_MANY_REQUESTS  = 429;
 
 // HTTP codes for server errors

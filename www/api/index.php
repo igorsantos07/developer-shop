@@ -29,8 +29,10 @@ $r->setBaseUrls('/api');
 $skip = ['.', '..'];
 foreach (scandir('../../src/API') as $file) {
     if (!in_array($file, $skip)) {
-        $name = strtok($file, '.');
-        $r->addAPIClass("\\Shop\\API\\$name");
+        $name  = strtok($file, '.');
+        $class = "\\Shop\\API\\$name";
+        $url = property_exists($class, 'url')? $class::$url : null;
+        $r->addAPIClass($class, $url);
     }
 }
 $r->addAPIClass(\Luracast\Restler\Explorer::class);

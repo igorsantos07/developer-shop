@@ -18,7 +18,7 @@ class Dev {
         }
         catch (\Exception $e) {
             if ($e->getCode() == Developer::ERR_NOT_FOUND) {
-                throw new RestException(404, 'Username not found in GitHub', [
+                throw new RestException(HTTP_NOT_FOUND, 'Username not found in GitHub', [
                     'username' => $username,
                     'url'      => $e->getMessage()
                 ], $e);
