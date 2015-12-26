@@ -1,6 +1,8 @@
 <?php
 use \Codeception\Util\Fixtures;
 
+require dirname(__FILE__).'/../../src/config/constants.php';
+
 Fixtures::add('devs', [
     'igorsantos07', 'brenoc', 'firstdoit'
 ]);
@@ -8,7 +10,7 @@ Fixtures::add('devs', [
 $faker = Faker\Factory::create();
 Fixtures::add('faker', $faker);
 
-Fixtures::add('coupon', [
-    'code'     => 'SHIPIT',
-    'discount' => 20
+Fixtures::add('coupons', [
+    ['code' => 'SHIPIT', 'discount' => 0.20],
+    ['code' => 'NOTTHIS', 'discount' => 0.01]
 ]);
