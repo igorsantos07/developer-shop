@@ -19,26 +19,30 @@ $I->amGoingTo('use an invalid coupon code');
 $I->sendPOST('cart/coupon', ['code' => 'XXX']);
 $I->seeResponseCodeIs(HTTP_NOT_FOUND);
 
+$set_coupon = function($coupon) use ($I, $item1, $item2) {
+    $I->sendPOST('cart/coupon', ['code' => $coupon['code']]);
+    $I->seeCodeAndJson(HTTP_OK, $coupon);
+    $I->sendGET('cart');
+    $I->seeResponseContainsJson([
+        'total' => floatify(($item1['price'] + $item2['price']) * (1 - $coupon['discount']))
+    ]);
+};
 $I->amGoingTo('use a valid coupon code');
-$I->sendPOST('cart/coupon', ['code' => $coupons[0]['code']]);
-$I->seeResponseCodeIs(HTTP_OK);
-$I->seeResponseEquals($coupons[0]['discount']);
-$I->sendGET('cart');
-$I->seeResponseContainsJson([
-    'total' => floatify(($item1['price'] + $item2['price']) * (1 - $coupons[0]['discount']))
-]);
+$set_coupon($coupons[0]);
+
+$I->amGoingTo('change the coupon');
+$set_coupon($coupons[1]);
 
 $I->amGoingTo('add a new item to see the price discount');
 $item3 = $gen_item();
 $I->sendPUT('cart', $item3);
 $I->sendGET('cart');
 $I->seeResponseContainsJson([
-    'total' => floatify(($item1['price'] + $item2['price'] + $item3['price']) * (1 - $coupons[0]['discount']))
+    'total' => floatify(($item1['price'] + $item2['price'] + $item3['price']) * (1 - $coupons[1]['discount']))
 ]);
 
-
 $I->amGoingTo('remove the wrong coupon');
-$I->sendDELETE('cart/coupon?code='.$coupons[1]['code']);
+$I->sendDELETE('cart/coupon?code='.$coupons[0]['code']);
 $I->seeResponseCodeIs(HTTP_CONFLICT);
 
 $I->amGoingTo('remove a weird coupon');
@@ -46,11 +50,11 @@ $I->sendDELETE('cart/coupon?code='.$faker->lexify('??????????'));
 $I->seeResponseCodeIs(HTTP_NOT_FOUND);
 
 $I->amGoingTo('remove the right coupon');
-$I->sendDELETE('cart/coupon?code='.$coupons[0]['code']);
+$I->sendDELETE('cart/coupon?code='.$coupons[1]['code']);
 $I->seeResponseCodeIs(HTTP_NO_CONTENT);
 
 $I->amGoingTo('remove the right coupon again');
-$I->sendDELETE('cart/coupon?code='.$coupons[0]['code']);
+$I->sendDELETE('cart/coupon?code='.$coupons[1]['code']);
 $I->seeResponseCodeIs(HTTP_EXPECTATION_FAILED);
 
 $I->amGoingTo('verify order value without discounts');

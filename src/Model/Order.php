@@ -25,17 +25,27 @@ class Order extends Base {
     ];
 
     public function setCouponIdAttribute($id) {
-        if ($id) {
-            $discount = Coupon::findOrFail($id)->discount;
-        } else {
-            $discount = $this->coupon_id? ($this->coupon->discount * -1) : 0;
+        if ($id == $this->coupon_id) { //nothing to do here, let's skip all the queries!
+            return;
         }
 
-        if ($discount) {
-            foreach ($this->items as $item) {
+        $update_items = function($discount) {
+            //using $this->items()->get() instead of $this->items forces us to always receive new items from the db.
+            //this is useful when we remove a coupon and add another at the same time - if we used the same
+            //pool of items, each item would still hold their individual copy of the order - with an old total
+            //todo: this could be query-optimized if we had three cases: add coupon, remove coupon, change coupon (computing the discount difference instead of running the other two cases in separate)
+            foreach ($this->items()->get() as $item) { /** @var Item $item */
                 $item->setDiscount($discount);
                 $item->save();
             }
+        };
+
+        if ($this->coupon_id) { //removes the old coupon, if it exists
+            $update_items($this->coupon->discount * -1);
+        }
+
+        if ($id) {  //adds the new coupon, if it exists
+            $update_items(Coupon::findOrFail($id)->discount);
         }
 
         $this->attributes['coupon_id'] = $id;

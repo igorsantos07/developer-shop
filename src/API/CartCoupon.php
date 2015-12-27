@@ -9,6 +9,11 @@ class CartCoupon {
 
     use traits\OrderRelated;
 
+    /**
+     * @param string $code
+     * @return Coupon
+     * @throws RestException
+     */
     private function getCoupon($code) {
         try {
             return Coupon::where('code', 'ilike', $code)->firstOrFail();
@@ -29,7 +34,7 @@ class CartCoupon {
         $order  = $this->getOrder(false);
         $order->coupon()->associate($coupon);
         $order->save();
-        return $coupon->discount;
+        return $coupon->attributesToArray();
     }
 
     /**

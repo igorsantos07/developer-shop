@@ -47,6 +47,7 @@ class Item extends Base {
         if ($this->order->coupon_id) {
             $this->setDiscount($this->order->coupon->discount);
         }
+        return true;
     }
 
     /**
@@ -55,6 +56,7 @@ class Item extends Base {
      */
     public function beforeUpdate() {
         $this->order->total -= $this->old_price;
+        return true;
     }
 
     public function afterDelete() {
