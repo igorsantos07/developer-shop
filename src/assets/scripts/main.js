@@ -87,8 +87,7 @@ var CartBlock = React.createClass({
         API.patch('cart')
             .success(data => {
                 $('tr.product').fadeOut('slow', 'swing', ()=> {
-                    this.state.products = [];
-                    this.setState(this.state);
+                    this.setState(this.getInitialState());
                 });
 
                 alertify
