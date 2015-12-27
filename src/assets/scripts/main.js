@@ -25,19 +25,25 @@ var CartBlock = React.createClass({
             });
     },
 
-    addDeveloper: function(username, price) {
+    addItem: function(item, price, qty) {
         var product = {
-            item: username,
-            price: price || 0
+            item: item,
+            price: price,
+            qty: qty
         };
 
         var prev_products = this.state.products;
-        this.state.products = this.state.products.concat([$.extend({ id: Date.now() }, product)]);
+        this.state.products = this.state.products.concat([$.extend({
+            id: Date.now(),
+            final_price: product.price * product.qty
+        }, product)]);
         this.setState(this.state);
 
         return API.put('cart', product)
             .success(data => {
-                this.state.products[this.state.products.length - 1].id = data.id;
+                var idx = this.state.products.length - 1;
+                this.state.products[idx].id = data.id;
+                this.state.products[idx].final_price = data.final_price;
                 this.setState(this.state);
             })
             .fail(()=> {
@@ -115,7 +121,7 @@ var CartBlock = React.createClass({
         return (<div className="row">
             <div className="col-sm-5">
                 <BS.Panel title="Add a developer">
-                    <Form onSubmit={this.addDeveloper}/>
+                    <Form onSubmit={this.addItem}/>
                 </BS.Panel>
             </div>
 

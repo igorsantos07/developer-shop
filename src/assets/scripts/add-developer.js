@@ -64,20 +64,12 @@ var Form = React.createClass({
 
         //we cannot mutate state values in the handle functions directly as they would affect the input UX
         var username = this.state.username.trim();
-        var price    = parseFloat(this.state.price) || '';
-
-        var $usernameParent = $('#username').parent('.form-group');
-        if (!username) {
-            $usernameParent.addClass('has-error');
-            alertify.log('You need to fill at least the developer username');
-            return false;
-        } else {
-            $usernameParent.removeClass('has-error');
-        }
+        var rate     = parseFloat(this.state.rate);
+        var hours    = parseFloat(this.state.hours);
 
         var prev_state = this.state;
         this.setState(this.getInitialState());
-        this.props.onSubmit(username, price)
+        this.props.onSubmit(username, rate, hours)
             .fail(()=> this.setState(prev_state));
     },
 

@@ -39,13 +39,13 @@ var CartTable = React.createClass({
     render: function() {
         var lines, total;
         if (this.props.products) {
-            total = this.props.products.reduce((total, prod)=> { return total + parseFloat(prod.price) }, 0);
+            total = this.props.products.reduce((total, prod)=> total + parseFloat(prod.final_price), 0);
 
             if (this.props.products.length > 0) {
                 lines = this.props.products.map((prod)=> {
                     //FIXME: is there a way to avoid passing a passed prop down? (onRemove)
                     return (
-                        <CartTable.ProductLine price={prod.price} key={prod.id} id={prod.id} onRemove={this.props.onRemove}>
+                        <CartTable.ProductLine {...prod} key={prod.id} onRemove={this.props.onRemove}>
                             {prod.item}
                         </CartTable.ProductLine>
                     );
@@ -64,6 +64,8 @@ var CartTable = React.createClass({
                     <tr>
                         <th>Username</th>
                         <th>Price</th>
+                        <th>Qty</th>
+                        <th>Total</th>
                         <th/>
                     </tr>
                 </thead>
@@ -73,12 +75,12 @@ var CartTable = React.createClass({
                 <tfoot>
                     <tr>
                         <th title="Tip: SHIPIT">Got a coupon?</th>
-                        <td>
+                        <td colSpan="2">
                             <form onSubmit={this.onCouponSubmit}>
                                 <input className="form-control" value={this.state.coupon} onChange={this.couponChange}/>
                             </form>
                         </td>
-                        <td>
+                        <td colSpan="2">
                             <button className="btn btn-info" onClick={this.onCouponSubmit}>
                                 <i className="glyphicon glyphicon-usd"/> Calculate
                             </button>
@@ -89,8 +91,10 @@ var CartTable = React.createClass({
                         if (this.props.appliedCoupon) {
                             return (<tr>
                                 <th>Applied coupon</th>
-                                <td>{this.props.appliedCoupon.code}:&nbsp;{this.props.appliedCoupon.discount * 100}%</td>
-                                <th>
+                                <td colSpan="2">
+                                    {this.props.appliedCoupon.code}:&nbsp;{this.props.appliedCoupon.discount * 100}%
+                                </td>
+                                <th colSpan="2">
                                     <button className="btn btn-warning" onClick={this.onCouponRemoval}>
                                         <i className="glyphicon glyphicon-trash"/> Remove
                                     </button>
@@ -101,8 +105,8 @@ var CartTable = React.createClass({
 
                     <tr>
                         <th>Total</th>
-                        <th>{utils.priceFormat(total, true)}</th>
-                        <th>
+                        <th colSpan="2">{utils.priceFormat(total, true)}</th>
+                        <th colSpan="2">
                             <button className="btn btn-success" onClick={this.props.onCheckout}>
                                 <i className="glyphicon glyphicon-credit-card"/>
                                 Checkout
@@ -133,6 +137,8 @@ CartTable.ProductLine = React.createClass({
             <tr className="product">
                 <td>{this.props.children}</td>
                 <td>{utils.priceFormat(this.props.price)}</td>
+                <td>{this.props.qty}</td>
+                <td>{utils.priceFormat(this.props.final_price)}</td>
                 <td>
                     <button className="btn btn-warning" onClick={this.onRemove}>
                         <i className="glyphicon glyphicon-trash" />

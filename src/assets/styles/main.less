@@ -54,12 +54,10 @@ label {
 #cartTable {
 	margin-bottom: 0;
 
-	th {
-		white-space: nowrap;
-	}
 	th, td {
+		white-space: nowrap;
 		vertical-align: middle;
-		&:not([colspan]):last-child {
+		&:not(:first-child) {
 			text-align: right;
 		}
 	}
