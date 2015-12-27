@@ -39,7 +39,7 @@ var CartTable = React.createClass({
     render: function() {
         var lines, total;
         if (this.props.products) {
-            total = this.props.products.reduce((total, prod)=> { return total + prod.price }, 0);
+            total = this.props.products.reduce((total, prod)=> { return total + parseFloat(prod.price) }, 0);
 
             if (this.props.products.length > 0) {
                 lines = this.props.products.map((prod)=> {
