@@ -1,14 +1,13 @@
 <?php namespace Shop\Model;
-use LaravelArdent\Ardent\Ardent;
 
 /**
  * @property string code
  * @property float  discount
  */
-class Coupon extends Ardent {
+class Coupon extends Base {
 
     public function getDiscountAttribute() {
-        return $this->attributes['discount'] / 100;
+        return self::monetary($this->attributes['discount'] / 100);
     }
 
 }

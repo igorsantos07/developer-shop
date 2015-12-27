@@ -11,8 +11,8 @@ $faker = Faker\Factory::create();
 Fixtures::add('faker', $faker);
 
 Fixtures::add('coupons', [
-    ['code' => 'SHIPIT', 'discount' => 0.20],
-    ['code' => 'NOTTHIS', 'discount' => 0.01]
+    ['code' => 'SHIPIT',  'discount' => '0.20'],
+    ['code' => 'NOTTHIS', 'discount' => '0.05']
 ]);
 
 /**
