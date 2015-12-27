@@ -3,8 +3,8 @@ $devs = \Codeception\Util\Fixtures::get('devs');
 $gen_item = function() use ($devs) {
     return [
         'item'  => $devs[array_rand($devs)],
-        'price' => floatify(rand(10.01, 999.99)),
-        'qty'   => rand(1, 20)
+        'price' => floatify(rand(1000, 99999)/100),
+        'qty'   => floatify(rand(10, 200)/10)
     ];
 };
 
@@ -25,5 +25,5 @@ $order   = $data->order_id;
 $item_id = $data->id;
 
 $I->amGoingTo('add another item to the same order');
-$item1 = $add_item();
+$item2 = $add_item();
 $I->assertEquals($order, json_decode($I->grabResponse())->order_id, 'The two items are in the same order');

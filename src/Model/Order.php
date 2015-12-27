@@ -29,29 +29,16 @@ class Order extends Base {
             return;
         }
 
-        $update_items = function($discount) {
-            //using $this->items()->get() instead of $this->items forces us to always receive new items from the db.
-            //this is useful when we remove a coupon and add another at the same time - if we used the same
-            //pool of items, each item would still hold their individual copy of the order - with an old total
-            //todo: this could be query-optimized if we had three cases: add coupon, remove coupon, change coupon (computing the discount difference instead of running the other two cases in separate)
-            foreach ($this->items()->get() as $item) { /** @var Item $item */
-                $item->setDiscount($discount);
-                $item->save();
-            }
-        };
-
-        if ($this->coupon_id) { //removes the old coupon, if it exists
-            $update_items($this->coupon->discount * -1);
-        }
-
-        if ($id) {  //adds the new coupon, if it exists
-            $update_items(Coupon::findOrFail($id)->discount);
+        $discount = $id? Coupon::findOrFail($id)->discount : 0;
+        foreach ($this->items as $item) {
+            $item->setDiscount($discount);
+            $item->save();
         }
 
         $this->attributes['coupon_id'] = $id;
     }
 
     public function getTotalAttribute() {
-        return self::monetary($this->attributes['total']);
+        return self::decimal($this->attributes['total']);
     }
 }

@@ -100,7 +100,7 @@ var Form = React.createClass({
                 <div className="form-group">
                     <label className="control-label" htmlFor="hours">Hire for<sup>*</sup>:</label>
                     <div className="input-group">
-                        <input type="number" min="1" step="0.5" id="hours" className="form-control" required
+                        <input type="number" min="1" max="999.5" step="0.5" id="hours" className="form-control" required
                                value={this.state.hours} onChange={this.handleHoursChange}/>
                         <div className="input-group-addon">hours</div>
                     </div>

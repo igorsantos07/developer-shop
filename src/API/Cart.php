@@ -23,10 +23,11 @@ class Cart {
      * @status 201
      * @param string $item  The item name {@from body}
      * @param float  $price The item price {@from body}
+     * @param float  $qty   The item quantity {@from body}
      * @return Item
      */
-    public function put($item, $price) {
-        $item = $this->getOrder(false)->items()->create(compact('item', 'price'));
+    public function put($item, $price, $qty) {
+        $item = $this->getOrder(false)->items()->create(compact('item', 'price', 'qty'));
         return $item->getAttributes();
     }
 

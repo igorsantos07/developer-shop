@@ -7,7 +7,7 @@
 class Coupon extends Base {
 
     public function getDiscountAttribute() {
-        return self::monetary($this->attributes['discount'] / 100);
+        return self::decimal($this->attributes['discount'] / 100);
     }
 
 }

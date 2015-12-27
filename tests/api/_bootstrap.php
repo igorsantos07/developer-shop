@@ -21,5 +21,5 @@ Fixtures::add('coupons', [
  * @return string
  */
 function floatify($number) {
-    return number_format($number, 2, '.', '');
+    return number_format(round($number, 2), 2, '.', '');
 }
