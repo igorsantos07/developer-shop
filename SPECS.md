@@ -33,19 +33,19 @@ Segue a descrição e motivação das tarefas desenvolvidas neste projeto, na or
 2. implementação de adição e remoção de itens no carrinho, com preço opcional;
 3. responsividade no layout, visto que é uma tela bem simples e com potencial para tal.
 
-### 1. API para operações do carrinho (#8)
+### 1. API para operações do carrinho (#8 / tag: cart-api)
 Esta tarefa foi tomada como a primeira da lista por dois motivos: ela integra a UX, demonstrando o próximo passo no flow do projeto, e também necessita da interação com uma API para persistência e finalização das operações.
 
-### 2. Integração com o GitHub para captura de dados e preço (#1, abrindo possibilidades para #2 e #7)
+### 2. Integração com o GitHub para captura de dados e preço (#1, abrindo possibilidades para #2 e #7 / tag: github)
 Considerei esta tarefa importante por representar a integração com uma API de terceiros, que pode ser encapsulada na API do sistema, tornando a integração transparente para o _client-side_. Também é importante para a coesão do sistema, de modo a torná-lo mais realista - afinal, ninguém define o preço que vai pagar por um produto, ou mesmo um desenvolvedor, certo? ;)
 
-### 3. Cupom de desconto (#6)
+### 3. Cupom de desconto (#6 / tag: coupons)
 Incluída aqui também por representar outro passo de um fluxo de carrinho comum: antes da compra, o usuário deve poder incluir um cupom de desconto - quem não gosta de desconto? Sob o ponto de vista técnico, é outro ponto de contato do frontend com o backend e, por ser uma parte intermediária do fluxo, seria interessante de demonstrar também.
 
-### 4. Escolha da quantidade de horas contratadas (#5)
+### 4. Escolha da quantidade de horas contratadas (#5 / tag: hours)
 Foi colocado aqui por ser uma tarefa simples e que traz mais sentido ainda para o sistema.
 
-### 5. Lista de desenvolvedores de uma organização (#4, #2)
+### 5. Lista de desenvolvedores de uma organização (#4, #2 / tag: organizations)
 Por fim, para aumentar a integração com o GitHub, incluí estes dois pontos como um só, visto que são bem próximos e a integração criada anteriormente possibilita facilmente a implementação destes. É outro ponto de contato do frontend com a API e traz um funcionamento mais prático e lógico para o sistema.
 
 
