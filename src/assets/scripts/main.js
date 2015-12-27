@@ -65,6 +65,7 @@ var CartBlock = React.createClass({
             this.setState(this.state);
             this.componentDidMount(); //refreshes data, so we do not have to handle product discounts here as well
         };
+
         if (code) {
             return API.post('cart/coupon/', { code: code })
                 .fail(()=> alertify.log('Invalid or expired coupon'))

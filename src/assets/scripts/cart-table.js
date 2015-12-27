@@ -20,9 +20,9 @@ var CartTable = React.createClass({
     onCouponSubmit: function(e) {
         e.preventDefault();
 
-        //if we have an empty state.coupon but have props.appliedCoupon, it means coupon removal, so go ahead
-        if (!this.state.coupon && !this.props.appliedCoupon) {
+        if (!this.state.coupon) {
             alertify.error('Please, fill in the coupon code first');
+            return;
         }
 
         this.props.onCoupon(this.state.coupon)
@@ -33,9 +33,7 @@ var CartTable = React.createClass({
     },
 
     onCouponRemoval: function(e) {
-        this.state.coupon = '';
-        this.setState(this.state);
-        this.onCouponSubmit(e);
+        this.props.onCoupon(null);
     },
 
     render: function() {
