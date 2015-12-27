@@ -8,22 +8,25 @@ var Form = React.createClass({
         price: ''
     }),
 
-    handlePriceChange: function(e) { this.setState({ price: e.target.value }) },
-    handleUsernameChange: function(e) { this.setState({ username: e.target.value }) },
+    handleUsernameChange: function(e) {
+        this.setState({
+            username: e.target.value,
+            price: ''
+        });
+    },
     findUserRate: function(e) {
         //FIXME: for some odd reason, the username disappears in the state inside the promise solutions, so we're hard-setting it here, again
         var username = this.state.username;
         var panel = $(e.target).parents('.panel-body');
         panel.addClass('loading-rates');
-        API.get('dev/'+this.state.username)
+        API.get('dev/'+this.state.username.trim())
             .success(data => {
                 this.state.price = data.rate;
                 console.log(data.rateDetails);
             })
             .fail(xhr => {
-                this.state.price = '';
                 console.log(xhr.responseJSON);
-                alertify.log('This user was not found on GitHub, you will need to provide the price yourself :(');
+                alertify.error('This developer does not have a GitHub account; he\'s too newbie to be hired.');
             })
             .always(()=> {
                 panel.removeClass('loading-rates');
@@ -34,6 +37,11 @@ var Form = React.createClass({
 
     handleSubmit: function(e) {
         e.preventDefault();
+
+        if (!this.state.price) {
+            alertify.error("Only acredited GitHub developers can be hired.<br/>Try 'Find rates' after typing a username before adding the developer.");
+            return;
+        }
 
         //we cannot mutate state values in the handle functions directly as they would affect the input UX
         var username = this.state.username.trim();
@@ -75,7 +83,7 @@ var Form = React.createClass({
                     <div className="input-group">
                         <div className="input-group-addon"><i className="glyphicon glyphicon-usd"/></div>
                         <input type="number" step="0.01" min="0" id="price" className="form-control"
-                               value={this.state.price} onChange={this.handlePriceChange}/>
+                               readOnly value={this.state.price}/>
                     </div>
                 </div>
 
