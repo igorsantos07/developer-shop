@@ -1,7 +1,6 @@
 var React = require('react');
 var API = require('./api');
-var alertify = require('../../../node_modules/alertify.js/dist/js/alertify');
-alertify.logPosition('top right');
+var alertify = require('./lib/alertify');
 
 var Form = React.createClass({
     getInitialState: ()=> ({

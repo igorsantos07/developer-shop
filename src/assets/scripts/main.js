@@ -2,9 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var utils = require('./utils');
 
-var BS = require('./bootstrap/all');
-var alertify = require('../../../node_modules/alertify.js/dist/js/alertify');
-alertify.logPosition('top right').theme('bootstrap');
+var BS = require('./lib/bootstrap/all');
+var alertify = require('./lib/alertify');
 
 var API = require('./api');
 var Form = require('./add-developer');
