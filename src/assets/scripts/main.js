@@ -11,14 +11,16 @@ var CartTable = require('./cart-table');
 
 
 var CartBlock = React.createClass({
-    getInitialState: ()=> (
-        { products: null }
-    ),
+    getInitialState: ()=> ({
+        products: null,
+        coupon: null
+    }),
 
     componentDidMount: function() {
         API.get('cart')
             .then(data => {
                 this.state.products = data.items;
+                this.state.coupon   = data.coupon;
                 this.setState(this.state);
             });
     },
@@ -57,14 +59,22 @@ var CartBlock = React.createClass({
             });
     },
 
-    setCoupon: function(e) {
-        this.state.coupon = e.target.value;
-        this.setState(this.state);
+    submitCoupon: function(code) {
+        var setCoupon = (coupon)=> {
+            this.state.coupon = coupon;
+            this.setState(this.state);
+            this.componentDidMount(); //refreshes data, so we do not have to handle product discounts here as well
+        };
+        if (code) {
+            return API.post('cart/coupon/', { code: code })
+                .fail(()=> alertify.log('Invalid or expired coupon'))
+                .success(data => setCoupon({ code: data.code, discount: data.discount }));
+        } else {
+            return API.delete('cart/coupon')
+                .success(()=> setCoupon(null))
+        }
     },
 
-    submitCoupon: function() {
-        console.log(this.state.coupon);
-    },
 
     checkout: function() {
         API.patch('cart')
@@ -112,9 +122,9 @@ var CartBlock = React.createClass({
                 <div className="panel-title panel-heading" title="Cart"> {/* weird classes just to get a gray box */}
 
                     <h2>Cart</h2>
-                    <CartTable products={this.state.products}
+                    <CartTable products={this.state.products} appliedCoupon={this.state.coupon}
                                onRemove={this.removeDeveloper} onCheckout={this.checkout}
-                               onCoupon={this.setCoupon} onCouponSubmit={this.submitCoupon}/>
+                               onCoupon={this.submitCoupon}/>
                 </div>
             </div>
         </div>);

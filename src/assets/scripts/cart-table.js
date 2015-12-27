@@ -1,13 +1,43 @@
 var React = require('react');
 var utils = require('./utils');
+var alertify = require('./lib/alertify');
 
 /**
  * @property {Array} products
+ * @property {Object} appliedCoupon
  * @property {function} onRemove
  * @property {function} onCheckout
  * @property {function} onCoupon
  */
 var CartTable = React.createClass({
+    getInitialState: ()=> ({ coupon: null }),
+
+    couponChange: function(e) {
+        this.state.coupon = e.target.value;
+        this.setState(this.state);
+    },
+
+    onCouponSubmit: function(e) {
+        e.preventDefault();
+
+        //if we have an empty state.coupon but have props.appliedCoupon, it means coupon removal, so go ahead
+        if (!this.state.coupon && !this.props.appliedCoupon) {
+            alertify.error('Please, fill in the coupon code first');
+        }
+
+        this.props.onCoupon(this.state.coupon)
+            .success(()=> {
+                this.state.coupon = '';
+                this.setState(this.state);
+            })
+    },
+
+    onCouponRemoval: function(e) {
+        this.state.coupon = '';
+        this.setState(this.state);
+        this.onCouponSubmit(e);
+    },
+
     render: function() {
         var lines, total;
         if (this.props.products) {
@@ -33,11 +63,11 @@ var CartTable = React.createClass({
         return (
             <table className="table" id="cartTable">
                 <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Price</th>
-                    <th/>
-                </tr>
+                    <tr>
+                        <th>Username</th>
+                        <th>Price</th>
+                        <th/>
+                    </tr>
                 </thead>
 
                 <tbody>{lines}</tbody>
@@ -45,14 +75,32 @@ var CartTable = React.createClass({
                 <tfoot>
                     <tr>
                         <th title="Tip: SHIPIT">Got a coupon?</th>
-                        <td><input className="form-control" onChange={this.props.onCoupon}/></td>
                         <td>
-                            <button className="btn btn-info" onClick={this.props.onCouponSubmit}>
-                                <i className="glyphicon glyphicon-usd"/>
-                                Calculate
+                            <form onSubmit={this.onCouponSubmit}>
+                                <input className="form-control" value={this.state.coupon} onChange={this.couponChange}/>
+                            </form>
+                        </td>
+                        <td>
+                            <button className="btn btn-info" onClick={this.onCouponSubmit}>
+                                <i className="glyphicon glyphicon-usd"/> Calculate
                             </button>
                         </td>
                     </tr>
+
+                    {(()=> {
+                        if (this.props.appliedCoupon) {
+                            return (<tr>
+                                <th>Applied coupon</th>
+                                <td>{this.props.appliedCoupon.code}:&nbsp;{this.props.appliedCoupon.discount * 100}%</td>
+                                <th>
+                                    <button className="btn btn-warning" onClick={this.onCouponRemoval}>
+                                        <i className="glyphicon glyphicon-trash"/> Remove
+                                    </button>
+                                </th>
+                            </tr>);
+                        }
+                    })()}
+
                     <tr>
                         <th>Total</th>
                         <th>{utils.priceFormat(total, true)}</th>
