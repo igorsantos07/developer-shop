@@ -3,7 +3,7 @@ module.exports = {
         price = parseFloat(price);
         if (typeof price == 'number') {
             if (!price) {
-                price = showZero? '$ 0' : 'free';
+                price = showZero? '$ 0' : '--';
             } else {
                 price = '$ ' + price.toFixed(2);
             }

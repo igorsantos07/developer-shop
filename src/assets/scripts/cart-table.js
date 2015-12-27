@@ -1,5 +1,5 @@
 var React = require('react');
-var utils = require('./utils');
+var utils = require('./lib/utils');
 var alertify = require('./lib/alertify');
 
 /**

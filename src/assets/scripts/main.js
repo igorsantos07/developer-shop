@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var utils = require('./utils');
 
+var utils = require('./lib/utils');
 var BS = require('./lib/bootstrap/all');
 var alertify = require('./lib/alertify');
 
