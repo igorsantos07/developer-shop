@@ -1,8 +1,12 @@
 <?php namespace Shop\Model;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Developer {
+
+    use GitHubClient;
 
     /** @var string */ public $username;
     /** @var string */ public $url;
@@ -17,7 +21,8 @@ class Developer {
     /** @var int */    public $following = 0;
     /** @var array */  protected $urls   = [];
 
-    /** @var int */    public $rate        = 0;
+    /** @var int */    public $rate      = 0;
+
     /**
      * More information on each detail can be found in the calc method.
      * @see calculateHourlyRate
@@ -40,6 +45,10 @@ class Developer {
 
     const ERR_NOT_FOUND = 1;
 
+    const ORG_BASIC_INFO    = 'basic';
+    const ORG_USER_INFO     = 'user';
+    const ORG_COMPLETE_INFO = 'complete';
+
     protected static $fieldRelations = [
         'avatar_url'   => 'avatar',
         'login'        => 'username',
@@ -48,38 +57,51 @@ class Developer {
         'public_gists' => 'gists',
     ];
 
-    protected static $rateMultipliers = [
-        'repos'     => 5, //cool! he codes so great he has shared amazing code with the world
-        'gists'     => 3,  //he has some code good enough to be shared, but not to make a full blown repo
+    /**
+     * Creates a Developer instance given a username or blob of data.
+     * @param string|array $loginOrData   Username to fetch from the API, or array of data already laaded from the API
+     * @param bool         $calculateRate If the developer hourly rate should be calculated.
+     *                                    As this is an expensive operation, you can opt-out.
+     * @throws ModelNotFoundException Non-existent username
+     */
+    public function __construct($loginOrData, $calculateRate = true) {
+        $data = is_string($loginOrData)?
+            json_decode(static::getOrFail('users/'.$loginOrData)->getBody(), true) :
+            $loginOrData;
 
-    ];
+        $this->importData($data);
 
-    /** @var Guzzle */
-    protected $github;
-
-    public function __construct($username) {
-        $this->github = new Guzzle([
-            'base_uri' => 'https://api.github.com',
-            'query'    => [
-                'client_id'     => GITHUB_CLIENT,
-                'client_secret' => GITHUB_SECRET
-            ]
-        ]);
-
-        try {
-            $user = $this->github->get('users/'.$username);
-        } catch (ClientException $e) {
-            if ($e->getCode() == HTTP_NOT_FOUND) {
-                throw new \Exception((string)$e->getRequest()->getUri(), self::ERR_NOT_FOUND, $e);
-            } else {
-                throw $e;
-            }
+        if ($calculateRate) {
+            $this->calculateHourlyRate();
+        } else {
+            $this->rateDetails = null;
         }
-
-        $this->importData(json_decode($user->getBody(), true));
-        $this->calculateHourlyRate();
     }
 
+    /**
+     * @param string $org Organization name
+     * @param string $level Level of information given. Additional levels require more requests. One of ORG_* constants.
+     * @return static[]
+     * @throws ModelNotFoundException Non-existent organization
+     */
+    public static function listFromOrganization($org, $level = self::ORG_BASIC_INFO) {
+        $org     = static::getOrFail("orgs/$org/members");
+
+        switch ($level) {
+            case self::ORG_BASIC_INFO:    $new = function($member) { return new self($member, false); };          break;
+            case self::ORG_USER_INFO:     $new = function($member) { return new self($member['login'], false); }; break;
+            case self::ORG_COMPLETE_INFO: $new = function($member) { return new self($member['login'], true); };  break;
+            default: throw new InvalidArgumentException('listFromOrganization\'s $level should be one of Developer::ORG_* constants');
+        }
+
+        return array_map($new, json_decode($org->getBody(), true));
+    }
+
+    /**
+     * Imports an array of data coming from the GitHub API.
+     * @param array $data
+     * @see fieldRelations
+     */
     public function importData(array $data) {
         foreach ($data as $key => $value) {
             if ($value) {
@@ -116,7 +138,7 @@ class Developer {
      * @todo commit counting is not working correctly, as they are paged and we're getting at most 30 per repo
      * @todo what about collaborations on other repositories? do the API contains this sort of information as well?
      */
-    protected function calculateHourlyRate() {
+    public function calculateHourlyRate() {
         $rates = $GLOBALS['cache']->get('rates.'.$this->username);
         if (!$rates) {
             $rates = $this->rateDetails;
@@ -127,13 +149,13 @@ class Developer {
             $rates['following'] = $this->following * 0.1;
             $rates['followers'] = $this->followers * 0.2;
 
-            $gists = $this->github->get($clear_github_url($this->urls['gists']));
+            $gists = $this->github()->get($clear_github_url($this->urls['gists']));
             foreach (json_decode($gists->getBody(), true) as $gist) {
                 $rates['gists'] += 0.3;
                 $rates['gist_comments'] += $gist['comments'] * 0.01;
-                $forks   = json_decode($this->github->get($gist['forks_url'])->getBody(), true);
+                $forks   = json_decode($this->github()->get($gist['forks_url'])->getBody(), true);
                 try {
-                    $commits = json_decode($this->github->get($gist['commits_url'])->getBody(), true);
+                    $commits = json_decode($this->github()->get($gist['commits_url'])->getBody(), true);
                     $rates['gist_forks']   += sizeof($forks) * 0.1;
                     $rates['gist_commits'] += sizeof($commits) * 0.01;
 //                    $rates['total_commits'][$gist['id']] = sizeof($commits);
@@ -145,7 +167,7 @@ class Developer {
                 }
             }
 
-            $repos = $this->github->get($clear_github_url($this->urls['repos']));
+            $repos = $this->github()->get($clear_github_url($this->urls['repos']));
             foreach (json_decode($repos->getBody(), true) as $repo) {
                 $rates['repos']         += 0.5;
                 $rates['repo_stars']    += $repo['stargazers_count'] * 0.02;
@@ -153,7 +175,7 @@ class Developer {
                 $rates['repo_forks']    += $repo['forks_count'] * 0.2;
                 try {
                     $commits_url = $clear_github_url($repo['commits_url']).'?author='.$this->username;
-                    $commits = json_decode($this->github->get($commits_url)->getBody(), true);
+                    $commits = json_decode($this->github()->get($commits_url)->getBody(), true);
                     $rates['repo_commits'] += sizeof($commits) * 0.02;
 //                    $rates['total_commits'][$repo['id']] = sizeof($commits);
                 }
@@ -169,6 +191,45 @@ class Developer {
 
         $this->rateDetails = $rates;
         $this->rate = array_sum($rates);
+    }
+
+}
+
+trait GitHubClient {
+
+    /** @var Guzzle */
+    private static $githubClient;
+
+    protected static function github() {
+        if (!static::$githubClient) {
+            static::$githubClient = new Guzzle([
+                'base_uri' => 'https://api.github.com',
+                'query'    => [
+                    'client_id'     => GITHUB_CLIENT,
+                    'client_secret' => GITHUB_SECRET
+                ]
+            ]);
+        }
+        return static::$githubClient;
+    }
+
+    /**
+     * Requests from the GitHub API and, if received a 404, returns a ModelNotFound exception.
+     * @param string $uri
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws ModelNotFoundException
+     */
+    protected static function getOrFail($uri) {
+        try {
+            return static::github()->get($uri);
+        } catch (ClientException $e) {
+            if ($e->getCode() == HTTP_NOT_FOUND) {
+                $url = (string)$e->getRequest()->getUri()->withQuery('');
+                throw new ModelNotFoundException($url, HTTP_NOT_FOUND, $e);
+            } else {
+                throw $e;
+            }
+        }
     }
 
 }
