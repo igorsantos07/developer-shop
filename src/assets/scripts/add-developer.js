@@ -1,28 +1,47 @@
 var React = require('react');
 var API = require('./api');
+var utils = require('./lib/utils');
 var alertify = require('./lib/alertify');
 
 var Form = React.createClass({
     getInitialState: ()=> ({
-        username: '',
-        price: ''
+        username: null,
+        rate: null,
+        hours: null,
+        price: null
     }),
 
     handleUsernameChange: function(e) {
-        this.setState({
+        this.setState({ //explicitly resetting all other developer-related values, as rate must be recalculated
             username: e.target.value,
-            price: ''
+            rate: null,
+            price: null
         });
     },
+
+    handleHoursChange: function(e) {
+        this.state.hours = e.target.value;
+        this.setState(this.state);
+        this.calculatePrice();
+    },
+
+    calculatePrice: function() {
+        if (this.state.rate && this.state.hours) {
+            this.state.price = this.state.rate * this.state.hours;
+            this.setState(this.state);
+        }
+    },
+
     findUserRate: function(e) {
-        //FIXME: for some odd reason, the username disappears in the state inside the promise solutions, so we're hard-setting it here, again
+        //FIXME: for some odd reason, the username disappears in the state inside the promise solutions, so we're hard-setting it later on always(), again
         var username = this.state.username;
         var panel = $(e.target).parents('.panel-body');
         panel.addClass('loading-rates');
         API.get('dev/'+this.state.username.trim())
             .success(data => {
-                this.state.price = data.rate;
+                this.state.rate = data.rate;
                 console.log(data.rateDetails);
+                this.calculatePrice();
             })
             .fail(xhr => {
                 console.log(xhr.responseJSON);
@@ -30,7 +49,7 @@ var Form = React.createClass({
             })
             .always(()=> {
                 panel.removeClass('loading-rates');
-                this.state.username = username;
+                this.state.username = username; //see fix-me note above
                 this.setState(this.state);
             });
     },
@@ -68,7 +87,7 @@ var Form = React.createClass({
                 <div className="form-group">
                     <label className="control-label" htmlFor="username">GitHub username<sup>*</sup>:</label>
                     <div className="input-group">
-                        <input type="text" id="username" className="form-control"
+                        <input type="text" id="username" className="form-control" required
                                value={this.state.username} onChange={this.handleUsernameChange}/>
                         <div className="input-group-addon">
                             <button type="button" className="btn btn-info" onClick={this.findUserRate}>
@@ -79,13 +98,29 @@ var Form = React.createClass({
                 </div>
 
                 <div className="form-group">
-                    <label className="control-label" htmlFor="price">Price:</label>
+                    <label className="control-label" htmlFor="hours">Hire for<sup>*</sup>:</label>
                     <div className="input-group">
-                        <div className="input-group-addon"><i className="glyphicon glyphicon-usd"/></div>
-                        <input type="number" step="0.01" min="0" id="price" className="form-control"
-                               readOnly value={this.state.price}/>
+                        <input type="number" min="1" step="0.5" id="hours" className="form-control" required
+                               value={this.state.hours} onChange={this.handleHoursChange}/>
+                        <div className="input-group-addon">hours</div>
                     </div>
+                    <p className="help-block">Minimum: 1 hour; fractioned to half-hour</p>
                 </div>
+
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Hourly rate</th>
+                            <th>Total price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{utils.priceFormat(this.state.rate)}</td>
+                            <td>{utils.priceFormat(this.state.price)}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <button type="submit" className="btn btn-success">
                     <i className="glyphicon glyphicon-shopping-cart"/> Add to cart
