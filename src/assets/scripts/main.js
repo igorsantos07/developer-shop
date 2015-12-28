@@ -16,12 +16,24 @@ var CartBlock = React.createClass({
         coupon: null
     }),
 
+    setStateWithProducts: function(state) {
+        state.products.sort((a, b)=> {
+            var aname = a.item.toLowerCase();
+            var bname = b.item.toLowerCase();
+            if (aname < bname) return -1;
+            else if (aname > bname) return 1;
+            else return 0;
+        });
+        this.state = state;
+        this.setState(this.state);
+    },
+
     componentDidMount: function() {
         API.get('cart')
             .then(data => {
                 this.state.products = data.items;
                 this.state.coupon   = data.coupon;
-                this.setState(this.state);
+                this.setStateWithProducts(this.state);
             });
     },
 
@@ -33,22 +45,22 @@ var CartBlock = React.createClass({
         };
 
         var prev_products = this.state.products;
+        var temp_id = Date.now();
         this.state.products = this.state.products.concat([$.extend({
-            id: Date.now(),
+            id: temp_id,
             final_price: product.price * product.qty
         }, product)]);
-        this.setState(this.state);
+        this.setStateWithProducts(this.state);
 
         return API.put('cart', product)
             .success(data => {
-                var idx = this.state.products.length - 1;
-                this.state.products[idx].id = data.id;
-                this.state.products[idx].final_price = data.final_price;
-                this.setState(this.state);
+                var idx = this.state.products.findIndex(e => e.id == temp_id);
+                this.state.products[idx] = data;
+                this.setStateWithProducts(this.state);
             })
             .fail(()=> {
                 this.state.products = prev_products;
-                this.setState(this.state);
+                this.setStateWithProducts(this.state);
                 alertify.error('Whoops... We had some issues trying to add that item :(');
             });
     },
@@ -61,7 +73,7 @@ var CartBlock = React.createClass({
         API.delete('cart/item/'+id)
             .fail(() => {
                 this.state.products = prev_products;
-                this.setState(this.state);
+                this.setStateWithProducts(this.state);
             });
     },
 
