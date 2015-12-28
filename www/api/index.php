@@ -7,6 +7,9 @@ session_start();
 
 $GLOBALS['cache'] = new Memcached;
 $GLOBALS['cache']->addServers($config['memcached']);
+if (PROD) {
+    $GLOBALS['cache']->set('oauth', getenv('IRON_CACHE_TOKEN').' '.getenv('IRON_CACHE_PROJECT_ID').' general');
+}
 
 /* ************************ CONFIGURES DATABASE ACCESS ************************ */
 $db = $config['database'];
