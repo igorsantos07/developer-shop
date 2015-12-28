@@ -6,8 +6,9 @@ elixir.config.css.autoprefix.options = {
 };
 
 elixir(function (mix) {
-    mix.less('../../../src/assets/styles', 'www/main.css');
     mix.browserify('../../../src/assets/scripts/main.js', 'www/main.js');
+    mix.less('../../../src/assets/styles', 'www/main.css');
+    mix.copy('node_modules/react-select/dist/react-select.min.css', 'www/lib/react-select.css');
     mix.browserSync({
         files: 'www/*',
         proxy: 'devshop.dev'

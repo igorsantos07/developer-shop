@@ -81,11 +81,12 @@ class Developer {
     /**
      * @param string $org Organization name
      * @param string $level Level of information given. Additional levels require more requests. One of ORG_* constants.
+     * @todo paginate the results to find all members
      * @return static[]
      * @throws ModelNotFoundException Non-existent organization
      */
     public static function listFromOrganization($org, $level = self::ORG_BASIC_INFO) {
-        $org     = static::getOrFail("orgs/$org/members");
+        $org = static::getOrFail("orgs/$org/members");
 
         switch ($level) {
             case self::ORG_BASIC_INFO:    $new = function($member) { return new self($member, false); };          break;

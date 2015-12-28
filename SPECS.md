@@ -45,7 +45,7 @@ Incluída aqui também por representar outro passo de um fluxo de carrinho comum
 ### 4. Escolha da quantidade de horas contratadas (#5 / tag: hours)
 Foi colocado aqui por ser uma tarefa simples e que traz mais sentido ainda para o sistema.
 
-### 5. Lista de desenvolvedores de uma organização (#4, #2 / tag: organizations)
+### 5. Lista de desenvolvedores de uma organização (#4, #2 / tag: organizations, fancy-list)
 Por fim, para aumentar a integração com o GitHub, incluí estes dois pontos como um só, visto que são bem próximos e a integração criada anteriormente possibilita facilmente a implementação destes. É outro ponto de contato do frontend com a API e traz um funcionamento mais prático e lógico para o sistema.
 
 

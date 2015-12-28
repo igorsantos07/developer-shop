@@ -2,6 +2,7 @@ var React = require('react');
 var API = require('./api');
 var utils = require('./lib/utils');
 var alertify = require('./lib/alertify');
+var DevSelect = require('./dev-select');
 
 var Form = React.createClass({
     getInitialState: ()=> ({
@@ -13,7 +14,13 @@ var Form = React.createClass({
         devs: []
     }),
 
-    handleOrgChange: function(e) { this.setState({ org: e.target.value, devs: [] }); },
+    handleOrgChange: function(e) {
+        this.setState({
+            org: e.target.value,
+            username: null,
+            devs: []
+        });
+    },
 
     handleUsernameChange: function(e) {
         //explicitly resetting all other developer-related values, as rate must be recalculated
@@ -23,9 +30,9 @@ var Form = React.createClass({
         this.setState(this.state);
     },
 
-    handleUsernameSelect: function(e) {
-        this.handleUsernameChange(e);
-        this.findUserRate(e);
+    handleUsernameSelect: function(user) {
+        this.handleUsernameChange({ target: { value: user.username }});
+        this.findUserRate();
     },
 
     handleHoursChange: function(e) {
@@ -41,12 +48,16 @@ var Form = React.createClass({
         }
     },
 
-    findDevelopers: function(e) {
-        var panel = $(e.target).parents('.panel-body');
-        panel.addClass('loading');
+    setLoadingPanel: function(className) {
+        document.querySelector('#add-developer .panel-body').className = 'panel-body '+(className || '');
+    },
+
+    findDevelopers: function() {
+        this.setLoadingPanel('loading');
 
         var uri = 'dev/organization/'+this.state.org+'?level=';
         API.get(uri + 'basic')
+            //.success(()=> API.get(uri + 'complete')) //preloading developer rates in the server memory
             .success(data => {
                 console.log('Total of '+data.size+' devs were found on '+this.state.org);
                 this.setState({ devs: data.members });
@@ -61,14 +72,14 @@ var Form = React.createClass({
                     alertify.error('We had some issues when retrieving the organization members... Would you try again later?');
                 }
             })
-            .always(()=> panel.removeClass('loading'));
+            .always(()=> this.setLoadingPanel());
+
     },
 
-    findUserRate: function(e) {
+    findUserRate: function() {
         //FIXME: for some odd reason, the username disappears in the state inside the promise solutions, so we're hard-setting it later on always(), again
         var username = this.state.username;
-        var panel = $(e.target).parents('.panel-body');
-        panel.addClass('loading-rates');
+        this.setLoadingPanel('loading-rates');
         API.get('dev/'+this.state.username.trim())
             .success(data => {
                 this.state.rate = data.rate;
@@ -80,7 +91,7 @@ var Form = React.createClass({
                 alertify.error('This developer does not have a GitHub account; he\'s too newbie to be hired.');
             })
             .always(()=> {
-                panel.removeClass('loading-rates');
+                this.setLoadingPanel();
                 this.state.username = username; //see fix-me note above
                 this.setState(this.state);
             });
@@ -90,12 +101,12 @@ var Form = React.createClass({
         e.preventDefault();
 
         if (!this.state.price) {
-            alertify.error("Only acredited GitHub developers can be hired.<br/>Try 'Find rates' after typing a username before adding the developer.");
+            alertify.error("Only acredited GitHub developers can be hired.<br/>Try hitting 'Find rates' after typing a username before adding the developer, or type an organization and then, select a user.");
             return;
         }
 
         //we cannot mutate state values in the handle functions directly as they would affect the input UX
-        var username = this.state.username.trim();
+        var username = this.state.org.trim()+'/'+this.state.username.trim();
         var rate     = parseFloat(this.state.rate);
         var hours    = parseFloat(this.state.hours);
 
@@ -109,13 +120,6 @@ var Form = React.createClass({
     },
 
     render: function() {
-        var devsList = [<option key="empty" value="" disabled>-= select =-</option>];
-        devsList = devsList.concat(this.state.devs.map(dev => {
-            return <option value={dev.username} key={dev.username}>
-                {dev.name? dev.name+' - @'+dev.username : '@'+dev.username+'...'}
-            </option>;
-        }));
-
         return (
             <form className="form" onSubmit={this.handleSubmit}>
                 <div className="form-group">
@@ -140,7 +144,6 @@ var Form = React.createClass({
                         <option value="Luracast"/>
                         <option value="HotelUrbano"/>
                         <option value="php"/>
-                        <option value="facebook"/>
                     </datalist>
                 </div>
 
@@ -148,10 +151,8 @@ var Form = React.createClass({
                     <label className="control-label" htmlFor="username">GitHub username<sup>*</sup>:</label>
                         {(()=> (this.state.devs.length)?
                             (
-                                <select id="username" className="form-control" required defaultValue=""
-                                        onChange={e => { this.handleUsernameChange(e); this.findUserRate(e); }}>
-                                    {devsList}
-                                </select>
+                                <DevSelect id="username" options={this.state.devs} searchable={false}
+                                           onChange={this.handleUsernameSelect} value={this.state.username}/>
                             ) : (
                                 <div className="input-group">
                                     <input type="text" id="username" className="form-control" required
@@ -172,7 +173,7 @@ var Form = React.createClass({
                     <div className="input-group">
                         <input type="number" min="1" max="999.5" step="0.5" id="hours" className="form-control" required
                                value={this.state.hours} onChange={this.handleHoursChange}/>
-                        <div className="input-group-addon">hours</div>
+                        <div className="input-group-addon">hour(s)</div>
                     </div>
                     <p className="help-block">Minimum: 1 hour; fractioned to half-hour</p>
                 </div>

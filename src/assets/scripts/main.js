@@ -99,7 +99,7 @@ var CartBlock = React.createClass({
         API.patch('cart')
             .success(data => {
                 $('tr.product').fadeOut('slow', 'swing', ()=> {
-                    this.setState(this.getInitialState());
+                    this.setState($.extend(this.getInitialState(), { products: [] }));
                 });
 
                 alertify
@@ -131,7 +131,7 @@ var CartBlock = React.createClass({
     render: function() {
         return (<div className="row">
             <div className="col-sm-5">
-                <BS.Panel title="Add a developer">
+                <BS.Panel id="add-developer" title="Add a developer">
                     <Form onSubmit={this.addItem}/>
                 </BS.Panel>
             </div>
